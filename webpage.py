@@ -63,7 +63,6 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; }
-        .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #101212 32rem); color:#f5f7f5; }
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
         .block-container { max-width:1400px; padding:2rem 3.5rem 2rem; position: relative; z-index: 10; }
         
