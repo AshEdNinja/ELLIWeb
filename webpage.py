@@ -103,7 +103,8 @@ st.markdown(
         [data-testid="stChatInput"] button:hover { background: rgba(255,255,255,0.1); }
         [data-testid="stChatInput"] button svg { fill:#c4c7c5; }
         
-        .clear-button { text-align: center; margin-top: 2rem; }
+        /* FLOATING CLEAR BUTTON TO THE SIDE (RIGHT) */
+        .clear-button { text-align: right; margin-top: 2rem; }
         .clear-button button { border-color:#444746!important; color:#8e918f!important; border-radius:2rem!important; font:.8rem "Space Grotesk",sans-serif!important; background: transparent !important; }
         .clear-button button:hover { background: #1e1f20 !important; color: #e3e3e3 !important; }
         
@@ -327,17 +328,10 @@ def show_chat() -> None:
                 content = message["content"]
                 think_match = re.search(r'<think>(.*?)</think>', content, re.DOTALL)
                 
+                # Strip out the cognition layer entirely for the UI
                 if think_match:
-                    thinking_text = think_match.group(1).strip()
                     final_answer = content.replace(think_match.group(0), "").strip()
-                    
-                    formatted_content = f'''
-                    <details style="margin-bottom: 12px; cursor: pointer;">
-                        <summary style="font-size: 0.75rem; color: #1ee5aa; font-family: 'DM Mono', monospace; text-transform: uppercase;"> View ELLI Cognition</summary>
-                        <div style="font-size: 0.9rem; color: #a8b0ab; margin-top: 8px; padding-left: 12px; border-left: 2px solid rgba(30,229,170,.4); white-space: pre-wrap; font-family: 'DM Mono', monospace;">{escape(thinking_text)}</div>
-                    </details>
-                    <div style="white-space: pre-wrap;">{escape(final_answer)}</div>
-                    '''
+                    formatted_content = f'<div style="white-space: pre-wrap;">{escape(final_answer)}</div>'
                 else:
                     formatted_content = f'<div style="white-space: pre-wrap;">{escape(content)}</div>'
                     
@@ -347,22 +341,23 @@ def show_chat() -> None:
                 
         st.markdown(conversation + "</div>", unsafe_allow_html=True)
         
-        # Clear Conversation Logic (Only show if there is actually a conversation)
+        # Clear Conversation Logic
         st.markdown('<div class="clear-button">', unsafe_allow_html=True)
         if not st.session_state.confirm_clear:
             if st.button("Clear conversation", key="clear_chat_init_btn"):
                 st.session_state.confirm_clear = True
                 st.rerun()
         else:
-            st.write("WARNING: Your chat will be lost forever!")
-            col1, col2 = st.columns([1, 5])
-            with col1:
+            # Re-aligning the confirmation text to right to match the button
+            st.markdown("<p style='text-align: right; margin-bottom: 0;'>WARNING: Your chat will be lost forever!</p>", unsafe_allow_html=True)
+            col1, col2, col3 = st.columns([4, 1, 1])
+            with col2:
                 if st.button("Yes, Clear", key="confirm_yes"):
                     st.session_state.current_chat_id = str(uuid.uuid4())
                     st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
                     st.session_state.confirm_clear = False
                     st.rerun()
-            with col2:
+            with col3:
                 if st.button("Cancel", key="confirm_no"):
                     st.session_state.confirm_clear = False
                     st.rerun()
