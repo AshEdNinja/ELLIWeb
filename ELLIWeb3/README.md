@@ -1,4 +1,0 @@
-1.) Copy and paste: pip install streamlit
-2.) Copy and paste: pip install supabase
-3.) Copy and paste: pip install groq
-4.) Copy and paste: streamlit run /workspaces/ELLIWeb/webpage.py
