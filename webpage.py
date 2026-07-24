@@ -84,6 +84,14 @@ st.markdown(
         .user-message { background:#2a2b2f; border:none; color:#f4f7f4; margin-left:auto; border-radius: 1.35rem 1.35rem 0.2rem 1.35rem; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; color: var(--mint); }
         
+        /* FIX: MAKE BOTTOM CONTAINER TRANSPARENT TO REMOVE BLACK BOX */
+        [data-testid="stBottom"],
+        [data-testid="stBottom"] > div,
+        [data-testid="stBottomBlock"],
+        .stChatFloatingInputContainer {
+            background: transparent !important;
+        }
+        
         /* PILL SHAPED CHAT INPUT */
         [data-testid="stChatInput"] { 
             border: none !important; 
@@ -232,7 +240,7 @@ if st.sidebar.button("➕ New Chat", use_container_width=True):
 if "confirm_clear" not in st.session_state:
     st.session_state.confirm_clear = False
 
-if st.sidebar.button("Clear Current Chat", use_container_width=True):
+if st.sidebar.button("🧹 Clear Current Chat", use_container_width=True):
     st.session_state.confirm_clear = True
 
 if st.session_state.confirm_clear:
@@ -317,8 +325,12 @@ if "messages" not in st.session_state:
 
 
 def show_chat() -> None:
-    # Extract user's first name from email, capitalize it
-    display_name = st.session_state.user_email.split("@")[0].capitalize() if st.session_state.user_email else "there"
+    # Extract user's first name from email, strip periods, and capitalize it
+    if st.session_state.user_email:
+        raw_name = st.session_state.user_email.split("@")[0]
+        display_name = raw_name.split(".")[0].capitalize()
+    else:
+        display_name = "there"
 
     # If the chat is brand new (only contains the hidden system init message), show the giant greeting!
     if len(st.session_state.messages) == 1:
