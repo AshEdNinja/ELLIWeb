@@ -78,10 +78,10 @@ st.markdown(
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; }
         
-        [data-testid="stChatInput"] { border:2px solid var(--mint)!important; background:#202523!important; border-radius:1.5rem!important; padding:.38rem .55rem!important; margin-top:1.3rem; }
         [data-testid="stChatInput"] textarea { color:var(--mint)!important; font:500 1.1rem "Space Grotesk",sans-serif!important; }
-        [data-testid="stChatInput"] textarea::placeholder { color:#a8b0ab!important; }
-        [data-testid="stChatInput"] button { background:var(--mint); border-radius:50%; }
+        [data-testid="stChatInput"] button { background:var(--mint); border-radius:50%; transition:background-color .2s ease, opacity .2s ease; }
+        [data-testid="stChatInput"] button:disabled { background:#6b756f!important; opacity:.8; cursor:not-allowed!important; box-shadow:none!important; }
+        [data-testid="stChatInput"] button:disabled svg { fill:#f4f7f4; }
         [data-testid="stChatInput"] button svg { fill:#13221b; }
         .clear-button button { border-color:#61716a!important; color:#b9c0bc!important; border-radius:1rem!important; font:.75rem "DM Mono",monospace!important; }
         
