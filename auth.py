@@ -1,50 +1,52 @@
 import streamlit as st
 from supabase import create_client, Client
 
-# Initialize the Supabase client using Streamlit secrets
-@st.cache_resource
-def init_supabase() -> Client:
-    url: str = st.secrets["SUPABASE_URL"]
-    key: str = st.secrets["SUPABASE_KEY"]
-    return create_client(url, key)
-
-supabase = init_supabase()
-
-def create_user(email, password):
-    try:
-        # Supabase handles the password hashing automatically
-        response = supabase.auth.sign_up({
-            "email": email, 
-            "password": password
-        })
-        return True, "Account created successfully! You can now log in."
-    except Exception as e:
-        # Will catch errors like "User already exists" or "Password too weak"
-        return False, str(e)
+def get_client() -> Client:
+    """
+    Creates or retrieves a Supabase client that is completely 
+    isolated to the current user's browser session.
+    """
+    if "supabase_client" not in st.session_state:
+        url = st.secrets["SUPABASE_URL"]
+        key = st.secrets["SUPABASE_KEY"]
+        st.session_state.supabase_client = create_client(url, key)
+    
+    return st.session_state.supabase_client
 
 def verify_user(email, password):
+    """Attempt to log in an existing user."""
+    client = get_client()
     try:
-        # Attempts to log the user in and grab a session token
-        response = supabase.auth.sign_in_with_password({
-            "email": email, 
-            "password": password
-        })
-        return True, response.user
+        response = client.auth.sign_in_with_password({"email": email, "password": password})
+        if response.user:
+            return True, "Success"
+        return False, "Unknown error during login."
     except Exception as e:
-        return False, "Invalid email or password."
+        return False, str(e)
+
+def create_user(email, password):
+    """Attempt to sign up a new user."""
+    client = get_client()
+    try:
+        response = client.auth.sign_up({"email": email, "password": password})
+        return True, "Account created successfully! You can now log in."
+    except Exception as e:
+        return False, str(e)
 
 def send_password_reset(email):
+    """Send a password reset link to the user's email."""
+    client = get_client()
     try:
-        # Instructs Supabase to send a password reset magic link to the user's email
-        supabase.auth.reset_password_email(email)
-        return True, "Password reset link sent! Please check your inbox."
+        client.auth.reset_password_email(email)
+        return True, "Password reset link sent to your email!"
     except Exception as e:
         return False, str(e)
 
 def update_password(new_password):
+    """Update the password for the currently logged-in user."""
+    client = get_client()
     try:
-        # Updates the password for the currently authenticated user
-        supabase.auth.update_user({"password": new_password})
+        client.auth.update_user({"password": new_password})
         return True, "Password updated successfully!"
     except Exception as e:
         return False, str(e)
