@@ -72,7 +72,6 @@ st.markdown(
         
         .chat-shell { background:rgb(28, 36, 34); border:1px solid var(--mint); padding:1.5rem 1.6rem 1.2rem; min-height:32rem; box-shadow:0 0 32px rgba(30,229,170,.06); margin-top: 1rem; }
         .chat-title { display:flex; justify-content:space-between; align-items:center; color:#e9efea; font:500 .77rem "DM Mono",monospace; letter-spacing:.1em; text-transform:uppercase; margin:0 .5rem 1.2rem; }
-        .online-dot { display:inline-block; width:.55rem; height:.55rem; background:var(--mint); border-radius:50%; margin-right:.45rem; box-shadow:0 0 12px var(--mint); }
         .message { width:fit-content; max-width:76%; padding:1rem 1.2rem; margin:.85rem .45rem; border-radius:1.35rem; font:500 1rem/1.45 "Space Grotesk",sans-serif; }
         .assistant-message { background:#29302d; border:1px solid var(--mint); border-bottom-left-radius:.35rem; color:#f4f7f4; }
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
