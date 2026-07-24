@@ -63,7 +63,7 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; }
-        # .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #101212 32rem); color:#f5f7f5; }
+        .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #101212 32rem); color:#f5f7f5; }
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
         .block-container { max-width:1400px; padding:2rem 3.5rem 2rem; position: relative; z-index: 10; }
         
@@ -73,15 +73,15 @@ st.markdown(
         
         .chat-shell { background:rgb(28, 36, 34); border:1px solid var(--mint); padding:1.5rem 1.6rem 1.2rem; min-height:32rem; box-shadow:0 0 32px rgba(30,229,170,.06); margin-top: 1rem; }
         .chat-title { display:flex; justify-content:space-between; align-items:center; color:#e9efea; font:500 .77rem "DM Mono",monospace; letter-spacing:.1em; text-transform:uppercase; margin:0 .5rem 1.2rem; }
-        # .online-dot { display:inline-block; width:.55rem; height:.55rem; background:var(--mint); border-radius:50%; margin-right:.45rem; box-shadow:0 0 12px var(--mint); }
+        .online-dot { display:inline-block; width:.55rem; height:.55rem; background:var(--mint); border-radius:50%; margin-right:.45rem; box-shadow:0 0 12px var(--mint); }
         .message { width:fit-content; max-width:76%; padding:1rem 1.2rem; margin:.85rem .45rem; border-radius:1.35rem; font:500 1rem/1.45 "Space Grotesk",sans-serif; }
         .assistant-message { background:#29302d; border:1px solid var(--mint); border-bottom-left-radius:.35rem; color:#f4f7f4; }
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; }
         
-        # [data-testid="stChatInput"] { border:2px solid var(--mint)!important; background:#202523!important; border-radius:1.5rem!important; padding:.38rem .55rem!important; margin-top:1.3rem; }
+        [data-testid="stChatInput"] { border:2px solid var(--mint)!important; background:#202523!important; border-radius:1.5rem!important; padding:.38rem .55rem!important; margin-top:1.3rem; }
         [data-testid="stChatInput"] textarea { color:var(--mint)!important; font:500 1.1rem "Space Grotesk",sans-serif!important; }
-        # [data-testid="stChatInput"] textarea::placeholder { color:#a8b0ab!important; }
+        [data-testid="stChatInput"] textarea::placeholder { color:#a8b0ab!important; }
         [data-testid="stChatInput"] button { background:var(--mint); border-radius:50%; }
         [data-testid="stChatInput"] button svg { fill:#13221b; }
         .clear-button button { border-color:#61716a!important; color:#b9c0bc!important; border-radius:1rem!important; font:.75rem "DM Mono",monospace!important; }
@@ -195,11 +195,12 @@ with st.sidebar.expander("Update Your Password", expanded=False):
                 else:
                     st.error(message)
 
-        if st.sidebar.button("Logout", key="logout_sidebar_btn"):
-            st.session_state.logged_in = False
-            st.session_state.user_email = ""
-            auth.supabase.auth.sign_out()
-            st.rerun()
+    if st.sidebar.button("Logout", key="logout_sidebar_btn"):
+        st.session_state.logged_in = False
+        st.session_state.user_email = ""
+        # FIX: Use the new isolated client to sign out
+        auth.get_client().auth.sign_out()
+        st.rerun()
 
 
 
@@ -216,10 +217,9 @@ def delete_all_chats_for_user():
         return False, "Please log in before deleting chats."
 
     try:
-        if not hasattr(auth, "supabase"):
-            return False, "Supabase client is unavailable."
-
-        res = auth.supabase.table("chats").delete().eq("user_email", st.session_state.user_email).execute()
+        # FIX: Use the new isolated client for queries
+        client = auth.get_client()
+        res = client.table("chats").delete().eq("user_email", st.session_state.user_email).execute()
         if getattr(res, "error", None):
             return False, f"Could not delete chat history: {res.error}"
         return True, "All chat history deleted."
@@ -235,9 +235,9 @@ if st.sidebar.button("Delete ALL Chats", use_container_width=True, key="delete_a
 
 if st.session_state.confirm_delete_all:
     st.sidebar.write("WARNING: This will permanently delete all your chats!")
-    col1, col2 = st.columns([1, 5])
+    col1, col2 = st.sidebar.columns([1, 1])
     with col1:
-        if st.sidebar.button("Yes, Clear", key="confirm_yes_sidebar"):
+        if st.button("Yes, Clear", key="confirm_yes_sidebar"):
             success, message = delete_all_chats_for_user()
             if success:
                 st.success(message)
@@ -249,20 +249,21 @@ if st.session_state.confirm_delete_all:
             st.session_state.messages = [{"role": "assistant", "content": "Conversation reset. How can I help?"}]
             st.rerun()
     with col2:
-        if st.sidebar.button("Cancel", key="confirm_no_sidebar"):
+        if st.button("Cancel", key="confirm_no_sidebar"):
             st.session_state.confirm_delete_all = False
             st.rerun()
-st.markdown("</div>", unsafe_allow_html=True)    
 
 st.sidebar.markdown("### Chat History")
 
 # Load history from Supabase
 try:
-    history_res = auth.supabase.table("chats").select("id, title").eq("user_email", st.session_state.user_email).order("created_at", desc=True).execute()
+    # FIX: Use the new isolated client for queries
+    client = auth.get_client()
+    history_res = client.table("chats").select("id, title").eq("user_email", st.session_state.user_email).order("created_at", desc=True).execute()
     if history_res.data:
         for past_chat in history_res.data:
             if st.sidebar.button(past_chat["title"], key=f"chat_{past_chat['id']}", use_container_width=True):
-                chat_data = auth.supabase.table("chats").select("messages").eq("id", past_chat["id"]).execute()
+                chat_data = client.table("chats").select("messages").eq("id", past_chat["id"]).execute()
                 if chat_data.data:
                     st.session_state.current_chat_id = past_chat["id"]
                     st.session_state.messages = chat_data.data[0]["messages"]
@@ -271,7 +272,6 @@ try:
         st.sidebar.caption("No past conversations yet.")
 except Exception as e:
     st.sidebar.caption("Could not load history. (Ensure SQL table is created)")
-
 
 
 # Chat Initialization
@@ -364,7 +364,9 @@ def show_chat() -> None:
                 title_text = st.session_state.messages[1]["content"] if len(st.session_state.messages) > 1 else "New Chat"
                 chat_title = (title_text[:25] + "...") if len(title_text) > 25 else title_text
                 
-                auth.supabase.table("chats").upsert({
+                # FIX: Use the new isolated client for queries
+                client = auth.get_client()
+                client.table("chats").upsert({
                     "id": st.session_state.current_chat_id,
                     "user_email": st.session_state.user_email,
                     "title": chat_title,
@@ -391,8 +393,7 @@ nav_col1, nav_col2, _ = st.columns([1, 7, 6])
 with nav_col1:
     st.page_link("webpage.py", label="Chat")
 with nav_col2:
+    # Ensure this matches the exact filename in your repo!
     st.page_link("pages/InfoPage.py", label="Info Center")
-# with nav_col3:
-#     st.page_link("pages/dashboard.py", label="Performance")
 
 show_chat()
