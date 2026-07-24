@@ -77,6 +77,22 @@ st.markdown(
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; }
         
+        /* FIX FOR RED BORDER GLITCH */
+        [data-testid="stChatInput"] { 
+            border: 2px solid var(--mint) !important; 
+            border-radius: 1.5rem !important;
+            margin-top: 1.3rem;
+            background: #202523 !important;
+        }
+        [data-testid="stChatInput"]:focus-within { 
+            border: 2px solid var(--mint) !important; 
+            box-shadow: 0 0 8px rgba(30,229,170,.4) !important; 
+        }
+        /* Override Streamlit's inner focused div */
+        [data-testid="stChatInput"] > div {
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
         [data-testid="stChatInput"] textarea { color:var(--mint)!important; font:500 1.1rem "Space Grotesk",sans-serif!important; }
         [data-testid="stChatInput"] button { background:var(--mint); border-radius:50%; transition:background-color .2s ease, opacity .2s ease; }
         [data-testid="stChatInput"] button:disabled { background:#6b756f!important; opacity:.8; cursor:not-allowed!important; box-shadow:none!important; }
@@ -196,7 +212,6 @@ with st.sidebar.expander("Update Your Password", expanded=False):
     if st.sidebar.button("Logout", key="logout_sidebar_btn"):
         st.session_state.logged_in = False
         st.session_state.user_email = ""
-        # FIX: Use the new isolated client to sign out
         auth.get_client().auth.sign_out()
         st.rerun()
 
@@ -215,7 +230,6 @@ def delete_all_chats_for_user():
         return False, "Please log in before deleting chats."
 
     try:
-        # FIX: Use the new isolated client for queries
         client = auth.get_client()
         res = client.table("chats").delete().eq("user_email", st.session_state.user_email).execute()
         if getattr(res, "error", None):
@@ -255,7 +269,6 @@ st.sidebar.markdown("### Chat History")
 
 # Load history from Supabase
 try:
-    # FIX: Use the new isolated client for queries
     client = auth.get_client()
     history_res = client.table("chats").select("id, title").eq("user_email", st.session_state.user_email).order("created_at", desc=True).execute()
     if history_res.data:
@@ -362,7 +375,6 @@ def show_chat() -> None:
                 title_text = st.session_state.messages[1]["content"] if len(st.session_state.messages) > 1 else "New Chat"
                 chat_title = (title_text[:25] + "...") if len(title_text) > 25 else title_text
                 
-                # FIX: Use the new isolated client for queries
                 client = auth.get_client()
                 client.table("chats").upsert({
                     "id": st.session_state.current_chat_id,
@@ -391,7 +403,6 @@ nav_col1, nav_col2, _ = st.columns([1, 7, 6])
 with nav_col1:
     st.page_link("webpage.py", label="Chat")
 with nav_col2:
-    # Ensure this matches the exact filename in your repo!
     st.page_link("pages/InfoPage.py", label="Info Center")
 
 show_chat()
