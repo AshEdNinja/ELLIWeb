@@ -77,20 +77,23 @@ st.markdown(
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; }
         
-        /* FIX FOR RED BORDER GLITCH */
+        /* FIX FOR BORDER GLITCH (REMOVED ENTIRELY) */
         [data-testid="stChatInput"] { 
-            border: 2px solid var(--mint) !important; 
+            border: none !important; 
             border-radius: 1.5rem !important;
             margin-top: 1.3rem;
             background: #202523 !important;
+            box-shadow: none !important;
         }
-        [data-testid="stChatInput"]:focus-within { 
-            border: 2px solid var(--mint) !important; 
-            box-shadow: 0 0 8px rgba(30,229,170,.4) !important; 
+        [data-testid="stChatInput"]:focus,
+        [data-testid="stChatInput"]:focus-within,
+        [data-testid="stChatInput"]:active { 
+            border: none !important; 
+            box-shadow: none !important; 
         }
         /* Override Streamlit's inner focused div */
         [data-testid="stChatInput"] > div {
-            border-color: transparent !important;
+            border: none !important;
             box-shadow: none !important;
         }
         [data-testid="stChatInput"] textarea { color:var(--mint)!important; font:500 1.1rem "Space Grotesk",sans-serif!important; }
@@ -403,6 +406,7 @@ nav_col1, nav_col2, _ = st.columns([1, 7, 6])
 with nav_col1:
     st.page_link("webpage.py", label="Chat")
 with nav_col2:
+    # Ensure this matches the exact filename in your repo!
     st.page_link("pages/InfoPage.py", label="Info Center")
 
 show_chat()
