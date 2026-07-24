@@ -232,7 +232,7 @@ if st.sidebar.button("➕ New Chat", use_container_width=True):
 if "confirm_clear" not in st.session_state:
     st.session_state.confirm_clear = False
 
-if st.sidebar.button("🧹 Clear Current Chat", use_container_width=True):
+if st.sidebar.button("Clear Current Chat", use_container_width=True):
     st.session_state.confirm_clear = True
 
 if st.session_state.confirm_clear:
