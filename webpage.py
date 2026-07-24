@@ -68,27 +68,37 @@ st.markdown(
         /* Darker gradient background */
         .stApp { background:radial-gradient(circle at 50% 30%, #1e242a 0, #0f1115 100%); color:#f5f7f5; }
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
-        .block-container { max-width:1000px; padding:2rem 3.5rem 6rem; position: relative; z-index: 10; margin: 0 auto; }
+        
+        /* FIX: MAKE PAGE FULL WIDTH TO PUSH LOGO LEFT */
+        .block-container { max-width: 100% !important; padding: 2rem 3rem 6rem 3rem !important; position: relative; z-index: 10; margin: 0; }
         
         .elli-brand { display:flex; align-items:flex-end; gap:0.8rem; margin:.2rem 0 1rem 0; }
         .elli-brand h1 { font:700 clamp(2.5rem,6vw,4rem)/.72 "Space Grotesk",sans-serif; letter-spacing:0; margin:0; color:#f2f4f2; }
         .elli-brand p { font:600 0.8rem/1.22 "Space Grotesk",sans-serif; color:#c5cbc7; margin:0 0 0.3rem 0; max-width:11rem; }
         
+        /* FIX: CONSTRAIN AND CENTER THE CHAT INTERFACE */
+        .chat-shell { max-width: 850px; margin: 1rem auto 2rem auto; padding-bottom: 2rem; }
+        
         /* Centered greeting */
-        .greeting-container { display: flex; justify-content: center; align-items: center; height: 50vh; text-align: center; flex-direction: column; }
+        .greeting-container { display: flex; justify-content: center; align-items: center; height: 50vh; text-align: center; flex-direction: column; max-width: 850px; margin: 0 auto; }
         .greeting-text { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; color: #e3e3e3; margin: 0; }
         
-        .chat-shell { margin-top: 1rem; padding-bottom: 2rem; }
         .message { width:fit-content; max-width:85%; padding:1rem 1.2rem; margin:.85rem 0; border-radius:1.35rem; font:400 1.05rem/1.5 "Space Grotesk",sans-serif; }
         .assistant-message { background:transparent; border:none; color:#e3e3e3; margin-right:auto; }
         .user-message { background:#2a2b2f; border:none; color:#f4f7f4; margin-left:auto; border-radius: 1.35rem 1.35rem 0.2rem 1.35rem; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; color: var(--mint); }
         
-        /* FIX: MAKE BOTTOM CONTAINER TRANSPARENT TO REMOVE BLACK BOX */
+        /* FIX: MAKE BOTTOM CONTAINER TRANSPARENT & CENTERED */
         [data-testid="stBottom"],
-        [data-testid="stBottom"] > div,
         [data-testid="stBottomBlock"],
         .stChatFloatingInputContainer {
+            background: transparent !important;
+        }
+        
+        /* Centers the actual input pill safely within the full-width page */
+        [data-testid="stBottom"] > div {
+            max-width: 850px !important;
+            margin: 0 auto !important;
             background: transparent !important;
         }
         
@@ -114,7 +124,11 @@ st.markdown(
         [data-testid="stChatInput"] button:hover { background: rgba(255,255,255,0.1); }
         [data-testid="stChatInput"] button svg { fill:#c4c7c5; }
         
-        @media (max-width:800px) { .block-container{padding:2rem 1rem;} .greeting-text{font-size: 2rem;} }
+        @media (max-width:800px) { 
+            .block-container{padding:2rem 1rem !important;} 
+            .greeting-text{font-size: 2rem;} 
+            [data-testid="stBottom"] > div { max-width: 100% !important; padding: 0 1rem !important;}
+        }
     </style>
     """,
     unsafe_allow_html=True,
@@ -236,11 +250,11 @@ if st.sidebar.button("➕ New Chat", use_container_width=True):
     st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
     st.rerun()
 
-# --- CLEAR CURRENT CHAT MOVED TO SIDEBAR ---
+# --- CLEAR CURRENT CHAT ---
 if "confirm_clear" not in st.session_state:
     st.session_state.confirm_clear = False
 
-if st.sidebar.button("Clear Current Chat", use_container_width=True):
+if st.sidebar.button("🧹 Clear Current Chat", use_container_width=True):
     st.session_state.confirm_clear = True
 
 if st.session_state.confirm_clear:
@@ -428,7 +442,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-nav_col1, nav_col2, _ = st.columns([1, 7, 6])
+# FIX: Constrain column widths so links stay packed on the left edge
+nav_col1, nav_col2, _ = st.columns([1, 1.3, 10])
 with nav_col1:
     st.page_link("webpage.py", label="Chat")
 with nav_col2:
