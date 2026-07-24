@@ -65,7 +65,7 @@ st.markdown(
         
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; --gemini-bg: #131314; --gemini-border: #444746; }
         
-        /* Darker gradient background matching the screenshot */
+        /* Darker gradient background */
         .stApp { background:radial-gradient(circle at 50% 30%, #1e242a 0, #0f1115 100%); color:#f5f7f5; }
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
         .block-container { max-width:1000px; padding:2rem 3.5rem 6rem; position: relative; z-index: 10; margin: 0 auto; }
@@ -74,7 +74,7 @@ st.markdown(
         .elli-brand h1 { font:700 clamp(2.5rem,6vw,4rem)/.72 "Space Grotesk",sans-serif; letter-spacing:0; margin:0; color:#f2f4f2; }
         .elli-brand p { font:600 0.8rem/1.22 "Space Grotesk",sans-serif; color:#c5cbc7; margin:0 0 0.3rem 0; max-width:11rem; }
         
-        /* Centered Gemini-style greeting */
+        /* Centered greeting */
         .greeting-container { display: flex; justify-content: center; align-items: center; height: 50vh; text-align: center; flex-direction: column; }
         .greeting-text { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; color: #e3e3e3; margin: 0; }
         
@@ -86,15 +86,18 @@ st.markdown(
         
         /* PILL SHAPED CHAT INPUT */
         [data-testid="stChatInput"] { 
-            border: 1px solid var(--gemini-border) !important; 
+            border: none !important; 
             border-radius: 3rem !important;
+            margin-top: 1.3rem;
             background: var(--gemini-bg) !important;
-            padding: 0.2rem 0.8rem !important;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
         }
-        [data-testid="stChatInput"]:focus-within { 
+        [data-testid="stChatInput"]:focus,
+        [data-testid="stChatInput"]:focus-within,
+        [data-testid="stChatInput"]:active { 
             background: #1e1f20 !important;
-            border-color: #8e918f !important;
+            border: none !important; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; 
         }
         [data-testid="stChatInput"] > div { border: none !important; box-shadow: none !important; background: transparent !important; }
         [data-testid="stChatInput"] textarea { color:#e3e3e3 !important; font:400 1.1rem "Space Grotesk",sans-serif!important; }
@@ -102,11 +105,6 @@ st.markdown(
         [data-testid="stChatInput"] button { background:transparent; border-radius:50%; transition: opacity .2s ease; }
         [data-testid="stChatInput"] button:hover { background: rgba(255,255,255,0.1); }
         [data-testid="stChatInput"] button svg { fill:#c4c7c5; }
-        
-        /* FLOATING CLEAR BUTTON TO THE SIDE (RIGHT) */
-        .clear-button { text-align: right; margin-top: 2rem; }
-        .clear-button button { border-color:#444746!important; color:#8e918f!important; border-radius:2rem!important; font:.8rem "Space Grotesk",sans-serif!important; background: transparent !important; }
-        .clear-button button:hover { background: #1e1f20 !important; color: #e3e3e3 !important; }
         
         @media (max-width:800px) { .block-container{padding:2rem 1rem;} .greeting-text{font-size: 2rem;} }
     </style>
@@ -198,7 +196,6 @@ if not st.session_state.logged_in:
 # Sidebar Controls & History
 st.sidebar.markdown(f"**Logged in as:**<br>{st.session_state.user_email}", unsafe_allow_html=True)
 
-
 with st.sidebar.expander("Update Your Password", expanded=False):
     with st.form("change_password_form"):
         update_pass = st.text_input("New Password", type="password", key="update_pass_input")
@@ -224,7 +221,6 @@ with st.sidebar.expander("Update Your Password", expanded=False):
         st.rerun()
 
 
-
 st.sidebar.divider()
 # New Chat Button
 if st.sidebar.button("➕ New Chat", use_container_width=True):
@@ -232,6 +228,28 @@ if st.sidebar.button("➕ New Chat", use_container_width=True):
     st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
     st.rerun()
 
+# --- CLEAR CURRENT CHAT MOVED TO SIDEBAR ---
+if "confirm_clear" not in st.session_state:
+    st.session_state.confirm_clear = False
+
+if st.sidebar.button("🧹 Clear Current Chat", use_container_width=True):
+    st.session_state.confirm_clear = True
+
+if st.session_state.confirm_clear:
+    st.sidebar.write("Clear this active conversation?")
+    col1, col2 = st.sidebar.columns([1, 1])
+    with col1:
+        if st.button("Yes", key="confirm_clear_yes"):
+            st.session_state.current_chat_id = str(uuid.uuid4())
+            st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
+            st.session_state.confirm_clear = False
+            st.rerun()
+    with col2:
+        if st.button("No", key="confirm_clear_no"):
+            st.session_state.confirm_clear = False
+            st.rerun()
+
+st.sidebar.divider()
 
 def delete_all_chats_for_user():
     if not st.session_state.get("user_email"):
@@ -299,9 +317,6 @@ if "messages" not in st.session_state:
 
 
 def show_chat() -> None:
-    if "confirm_clear" not in st.session_state:
-        st.session_state.confirm_clear = False
-
     # Extract user's first name from email, capitalize it
     display_name = st.session_state.user_email.split("@")[0].capitalize() if st.session_state.user_email else "there"
 
@@ -341,31 +356,8 @@ def show_chat() -> None:
                 
         st.markdown(conversation + "</div>", unsafe_allow_html=True)
         
-        # Clear Conversation Logic
-        st.markdown('<div class="clear-button">', unsafe_allow_html=True)
-        if not st.session_state.confirm_clear:
-            if st.button("Clear conversation", key="clear_chat_init_btn"):
-                st.session_state.confirm_clear = True
-                st.rerun()
-        else:
-            # Re-aligning the confirmation text to right to match the button
-            st.markdown("<p style='text-align: right; margin-bottom: 0;'>WARNING: Your chat will be lost forever!</p>", unsafe_allow_html=True)
-            col1, col2, col3 = st.columns([4, 1, 1])
-            with col2:
-                if st.button("Yes, Clear", key="confirm_yes"):
-                    st.session_state.current_chat_id = str(uuid.uuid4())
-                    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
-                    st.session_state.confirm_clear = False
-                    st.rerun()
-            with col3:
-                if st.button("Cancel", key="confirm_no"):
-                    st.session_state.confirm_clear = False
-                    st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
     # 3. AI GENERATION & DB SAVE
     if prompt := st.chat_input("Ask ELLI"):
-        st.session_state.confirm_clear = False
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.rerun()
 
