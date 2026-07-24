@@ -1,4 +1,3 @@
-1.) Install streamlit
-2.) Install supabase
-3.) Install groq
-4.) streamlit run /workspaces/ELLIWeb/webpage.py
+streamlit
+supabase
+groq
