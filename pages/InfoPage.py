@@ -189,7 +189,7 @@ with tab5:
         * **1. Datasets (via Hugging Face):** 
 
            
-           * ** English Conversation 22:
+           * *English Conversation 22:
               
 				https://huggingface.co/datasets/google/Synthetic-Persona-Chat
 				
@@ -204,7 +204,7 @@ with tab5:
 				https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
      
             
-           * ** AI related 5
+           * *AI related 5
                 
 				https://huggingface.co/datasets/databricks/databricks-dolly-15k
                 
@@ -213,7 +213,7 @@ with tab5:
 				https://huggingface.co/datasets/Salesforce/wikitext
 
     
-           * ** Python 4-9
+           * *Python 4-9
                 
 				https://huggingface.co/datasets/sentence-transformers/codesearchnet
                 
@@ -226,12 +226,12 @@ with tab5:
 				https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
 
     
-           * ** Text generation : 
+           * *Text generation : 
                 
 				https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
 
     
-           * ** Wiki(science & common sense) 20:
+           * *Wiki(science & common sense) 20:
                 
 				https://huggingface.co/datasets/allenai/sciq
                 
@@ -268,7 +268,7 @@ with tab5:
 				https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
 
 
-           * **Math 1-6:
+           * *Math 1-6:
                 
 				https://huggingface.co/datasets/allenai/math_qa 
                 
@@ -279,14 +279,14 @@ with tab5:
 				https://huggingface.co/datasets/cais/mmlu 
 
 
-           * ** First Person 20:
+           * *First Person 20:
                 
 				https://huggingface.co/datasets/agentlans/first-person-dialogue
                 
 				https://huggingface.co/datasets/openbmb/UltraFeedback (Wait for doing)
 
 
-           * ** English literature 7 (optional) (not question and answer):
+           * *English literature 7 (optional) (not question and answer):
                 
 				https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
                 
@@ -299,14 +299,14 @@ with tab5:
 				https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
 
 	
-           * **Humanizer : 
+           * *Humanizer : 
             
 				https://huggingface.co/datasets/HuggingFaceH4/no_robots
                 
 				https://huggingface.co/datasets/openai/openai_humaneval - Accept the human prompts and reject the AI prompts
 
                 
-           * **Logic : 
+           * *Logic : 
               
 				https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
                 
