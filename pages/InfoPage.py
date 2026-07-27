@@ -186,7 +186,7 @@ with tab5:
         st.code(sources_path.read_text(encoding="utf-8"), language="bibtex")
     else:
         st.markdown("""
-        * **1. Datasets (via Hugging Face):** 
+* **1. Datasets (via Hugging Face):** 
 
            
            * English Conversation 22:
@@ -311,7 +311,7 @@ with tab5:
 				https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
                 
                 
-        * **2. Websites & Research Frameworks**
+* **2. Websites & Research Frameworks**
 
 
             * Streamlit Open-Source App Framework
@@ -319,7 +319,7 @@ with tab5:
 
 
 
-        * **3. AI Tools Used In This Project**
+* **3. AI Tools Used In This Project**
 
 
             * Eddie:
