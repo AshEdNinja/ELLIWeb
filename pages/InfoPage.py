@@ -188,100 +188,87 @@ with tab5:
         st.markdown("""
         * **1. Datasets (via Hugging Face):** 
 
- 
-            https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus
+           
+            ** English Conversation 22:
+                https://huggingface.co/datasets/google/Synthetic-Persona-Chat
+                https://huggingface.co/datasets/ParlAI/blended_skill_talk 
+                https://huggingface.co/datasets/Organika/wizard_of_wikipedia
+                https://huggingface.co/datasets/allenai/prosocial-dialog
+                https://huggingface.co/datasets/allenai/soda
+                https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
+     
+            
+            ** AI related 5
+                https://huggingface.co/datasets/databricks/databricks-dolly-15k
+                https://huggingface.co/datasets/aps/super_glue
+                https://huggingface.co/datasets/Salesforce/wikitext
+
+    
+            ** Python 4-9
+                https://huggingface.co/datasets/sentence-transformers/codesearchnet
+                https://huggingface.co/datasets/iamtarun/code_instructions_120k_alpaca
+                https://huggingface.co/datasets/Glint-Research/Fable-5-traces
+                https://huggingface.co/datasets/Muennighoff/mbpp
+                https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
+
+    
+            ** Text generation : 
+                https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
+
+    
+            ** Wiki(science & common sense) 20:
+                https://huggingface.co/datasets/allenai/sciq
+                https://huggingface.co/datasets/allenai/openbookqa
+                https://huggingface.co/datasets/allenai/qasc
+                https://huggingface.co/datasets/allenai/ai2_arc
+                https://huggingface.co/datasets/allenai/scifact X
+                https://huggingface.co/datasets/qiaojin/PubMedQA
+                https://huggingface.co/datasets/billli/QuRe X
+                https://huggingface.co/datasets/hotpotqa/hotpot_qa
+                https://huggingface.co/datasets/baonn/nqopen X
+                https://huggingface.co/datasets/rajpurkar/squad_v2
+                https://huggingface.co/datasets/google/boolq
+                https://huggingface.co/datasets/ucinlp/drop
+                https://huggingface.co/datasets/microsoft/wiki_qa
+                https://huggingface.co/datasets/fever/fever X
+                https://huggingface.co/datasets/tau/commonsense_qa
+                https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
+                https://huggingface.co/datasets/allenai/winogrande
+                https://huggingface.co/datasets/Rowan/hellaswag
+                https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
+                https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
+                https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
 
 
-            https://huggingface.co/datasets/openai/gsm8k
-
-            
-            https://huggingface.co/datasets/Tommy0201/Kaggle_CNN_Text_Summarization
-
-            
-            https://huggingface.co/datasets/tanaos/synthetic-text-summarization-dataset-v1
-
-            
-            https://huggingface.co/datasets/iamtarun/python_code_instructions_18k_alpaca
+            **Math 1-6:
+                https://huggingface.co/datasets/allenai/math_qa 
+                https://huggingface.co/datasets/qwedsacf/competition_math
+                https://huggingface.co/datasets/openai/gsm8k
+                https://huggingface.co/datasets/cais/mmlu 
 
 
-            https://huggingface.co/datasets/ar852/scraped-chatgpt-conversations
-
-            
-            https://huggingface.co/datasets/open-thoughts/OpenThoughts-Agent-SFT-100K
-
-
-            https://huggingface.co/datasets/fka/prompts.chat
-
-            
-            https://arxiv.org/abs/2502.14739
-            
-            
-            https://arxiv.org/abs/2601.21821
-            
-            
-            https://huggingface.co/datasets/allenai/sciq
-            
-            
-            https://huggingface.co/datasets/allenai/openbookqa
-            
-            
-            https://huggingface.co/datasets/allenai/qasc
-            
-            
-            https://huggingface.co/datasets/allenai/ai2_arc
-            
-            
-            https://huggingface.co/datasets/allenai/scifact X
-            
-            
-            https://huggingface.co/datasets/qiaojin/PubMedQA
-            
-            
-            https://huggingface.co/datasets/billli/QuRe X
-            
-            
-            https://huggingface.co/datasets/hotpotqa/hotpot_qa
-            
-            
-            https://huggingface.co/datasets/baonn/nqopen X
-            
-            
-            https://huggingface.co/datasets/rajpurkar/squad_v2
-            
-            
-            https://huggingface.co/datasets/google/boolq
-            
-            
-            https://huggingface.co/datasets/ucinlp/drop
-            
-            
-            https://huggingface.co/datasets/microsoft/wiki_qa
-            
-            
-            https://huggingface.co/datasets/fever/fever X
-            
-            
-            https://huggingface.co/datasets/tau/commonsense_qa
-            
-            
-            https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
-            
-            
-            https://huggingface.co/datasets/allenai/winogrande
-            
-            
-            https://huggingface.co/datasets/Rowan/hellaswag
-            
-            
-            https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
-            
-            
-            https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
-
-            
-            https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
+            ** First Person 20:
+                https://huggingface.co/datasets/agentlans/first-person-dialogue
+                https://huggingface.co/datasets/openbmb/UltraFeedback (Wait for doing)
 
 
+            ** English literature 7 (optional) (not question and answer):
+                https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
+                http://huggingface.co/datasets/jimmyzxj/drosophila-literature-corpus
+                https://huggingface.co/datasets/common-pile/pre_1929_books_filtered
+                https://huggingface.co/datasets/schneewolflabs/hecke-dpo 
+                https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
+
+	
+            **Humanizer : 
+                https://huggingface.co/datasets/HuggingFaceH4/no_robots
+                https://huggingface.co/datasets/openai/openai_humaneval - Accept the human prompts and reject the AI prompts
+
+                
+             **Logic : 
+                https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
+                
+                
         * **2. Websites & Research Frameworks**
 
 
