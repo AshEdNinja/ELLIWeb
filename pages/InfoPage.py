@@ -283,7 +283,7 @@ with tab5:
 		
 		https://huggingface.co/datasets/agentlans/first-person-dialogue
 		
-		https://huggingface.co/datasets/openbmb/UltraFeedback (Wait for doing)
+		https://huggingface.co/datasets/openbmb/UltraFeedback
 
 
    * English literature:
@@ -303,7 +303,7 @@ with tab5:
 	
 		https://huggingface.co/datasets/HuggingFaceH4/no_robots
 		
-		https://huggingface.co/datasets/openai/openai_humaneval - Accept the human prompts and reject the AI prompts
+		https://huggingface.co/datasets/openai/openai_humaneval
 
 		
    * Logic : 
