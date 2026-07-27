@@ -187,63 +187,99 @@ with tab5:
     else:
         st.markdown("""
         * **1. Datasets (via Hugging Face):** 
-            * SmolLM-Corpus
-                Authors: Loubna Ben Allal, Anton Lozhkov, Guilherme Penedo, Thomas Wolf, Leandro von Werra (2024)
-                Link: https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus
+
+ 
+            https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus
 
 
+            https://huggingface.co/datasets/openai/gsm8k
 
-            * GSM8K (Grade School Math Dataset)
-                Research Paper: "Training Verifiers to Solve Math Word Problems" by Karl Cobbe et al. (2021)
-                Link: https://huggingface.co/datasets/openai/gsm8k
+            
+            https://huggingface.co/datasets/Tommy0201/Kaggle_CNN_Text_Summarization
 
-            * Kaggle CNN Text Summarization
-                Author: Minh (Tommy) Nguyen
-                Link: https://huggingface.co/datasets/Tommy0201/Kaggle_CNN_Text_Summarization
+            
+            https://huggingface.co/datasets/tanaos/synthetic-text-summarization-dataset-v1
 
-
-
-            * Synthetic Text Summarization Dataset v1
-                Author: tanaos
-                Link: https://huggingface.co/datasets/tanaos/synthetic-text-summarization-dataset-v1
+            
+            https://huggingface.co/datasets/iamtarun/python_code_instructions_18k_alpaca
 
 
+            https://huggingface.co/datasets/ar852/scraped-chatgpt-conversations
 
-            * Python Code Instructions 18k Alpaca
-                Author: iamtarun
-                Link: https://huggingface.co/datasets/iamtarun/python_code_instructions_18k_alpaca
-
-
+            
+            https://huggingface.co/datasets/open-thoughts/OpenThoughts-Agent-SFT-100K
 
 
-            * Scraped ChatGPT Conversations
-                Author: Arya Nistane
-                Link: https://huggingface.co/datasets/ar852/scraped-chatgpt-conversations
+            https://huggingface.co/datasets/fka/prompts.chat
 
+            
+            https://arxiv.org/abs/2502.14739
+            
+            
+            https://arxiv.org/abs/2601.21821
+            
+            
+            https://huggingface.co/datasets/allenai/sciq
+            
+            
+            https://huggingface.co/datasets/allenai/openbookqa
+            
+            
+            https://huggingface.co/datasets/allenai/qasc
+            
+            
+            https://huggingface.co/datasets/allenai/ai2_arc
+            
+            
+            https://huggingface.co/datasets/allenai/scifact X
+            
+            
+            https://huggingface.co/datasets/qiaojin/PubMedQA
+            
+            
+            https://huggingface.co/datasets/billli/QuRe X
+            
+            
+            https://huggingface.co/datasets/hotpotqa/hotpot_qa
+            
+            
+            https://huggingface.co/datasets/baonn/nqopen X
+            
+            
+            https://huggingface.co/datasets/rajpurkar/squad_v2
+            
+            
+            https://huggingface.co/datasets/google/boolq
+            
+            
+            https://huggingface.co/datasets/ucinlp/drop
+            
+            
+            https://huggingface.co/datasets/microsoft/wiki_qa
+            
+            
+            https://huggingface.co/datasets/fever/fever X
+            
+            
+            https://huggingface.co/datasets/tau/commonsense_qa
+            
+            
+            https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
+            
+            
+            https://huggingface.co/datasets/allenai/winogrande
+            
+            
+            https://huggingface.co/datasets/Rowan/hellaswag
+            
+            
+            https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
+            
+            
+            https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
 
-
-            * OpenThoughts-Agent-SFT-100K
-                Author: open-thoughts
-                Link: https://huggingface.co/datasets/open-thoughts/OpenThoughts-Agent-SFT-100K
-
-
-
-            * Prompts.chat
-                Author: Fatih Kadir Akın
-                Link: https://huggingface.co/datasets/fka/prompts.chat
-
-
-
-            * SuperGPQA: Scaling LLM Evaluation across 285 Graduate Disciplines
-                Author: M-A-P Team et al. (2025)
-                Research Link: https://arxiv.org/abs/2502.14739
-
-
-
-            * MMFineReason: Closing the Multimodal Reasoning Gap via Open Data-Centric Methods
-                Author: Honglin Lin et al. (2026)
-                Research Link: https://arxiv.org/abs/2601.21821
-
+            
+            https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
 
 
         * **2. Websites & Research Frameworks**
