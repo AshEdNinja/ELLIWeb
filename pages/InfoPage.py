@@ -221,16 +221,12 @@ with tab5:
                 https://huggingface.co/datasets/allenai/openbookqa
                 https://huggingface.co/datasets/allenai/qasc
                 https://huggingface.co/datasets/allenai/ai2_arc
-                https://huggingface.co/datasets/allenai/scifact X
                 https://huggingface.co/datasets/qiaojin/PubMedQA
-                https://huggingface.co/datasets/billli/QuRe X
                 https://huggingface.co/datasets/hotpotqa/hotpot_qa
-                https://huggingface.co/datasets/baonn/nqopen X
                 https://huggingface.co/datasets/rajpurkar/squad_v2
                 https://huggingface.co/datasets/google/boolq
                 https://huggingface.co/datasets/ucinlp/drop
                 https://huggingface.co/datasets/microsoft/wiki_qa
-                https://huggingface.co/datasets/fever/fever X
                 https://huggingface.co/datasets/tau/commonsense_qa
                 https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
                 https://huggingface.co/datasets/allenai/winogrande
