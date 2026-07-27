@@ -193,9 +193,9 @@ with tab5:
               
 				https://huggingface.co/datasets/google/Synthetic-Persona-Chat
 				
-                https://huggingface.co/datasets/ParlAI/blended_skill_talk 
+				https://huggingface.co/datasets/ParlAI/blended_skill_talk 
 				
-                https://huggingface.co/datasets/Organika/wizard_of_wikipedia
+				https://huggingface.co/datasets/Organika/wizard_of_wikipedia
                 
 				https://huggingface.co/datasets/allenai/prosocial-dialog
                 
