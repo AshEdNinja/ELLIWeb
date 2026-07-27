@@ -126,7 +126,6 @@ st.markdown(
         <p class="hero-copy">Project Overview</p>
         <h2>ELLI</h2>
         <p class="hero-subtitle">Evolving Language Learning Intelligence</p>
-        <p class="hero-copy">ELLI is designed to overcome the computational bottleneck of massive 70-billion parameter models. By using a highly efficient 300-million parameter architecture powered by a Mixture of Experts, ELLI acts as a hyper-adaptable AI agent that bridges raw computation and intuitive user adaptation through continuous, spontaneous learning.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -147,7 +146,7 @@ tab2, tab3, tab4, tab5 = st.tabs([ "Stats for Nerds", "Creators", "Proposal", "S
 
 with tab2:
     st.markdown("### ELLI’s thinking layer")
-    st.info("The updated ELLI thinking-layer code has not been added yet. This page is ready for model statistics, tokenization details, training metrics, and an architecture diagram when it is available.")
+    st.info("Model WIP")
 
 with tab3:
     st.markdown("### Team Eightfold | The Founders")
@@ -170,7 +169,7 @@ with tab3:
 
 with tab4:
     st.markdown("### The Original Idea")
-    st.markdown("This proposal describes the original concept behind ELLI.")
+    st.markdown("The proposal of the original concept behind ELLI.")
     proposal = ROOT / "_Proposal of ELLI.pdf"
     if proposal.exists():
         pdf_data = base64.b64encode(proposal.read_bytes()).decode("utf-8")
