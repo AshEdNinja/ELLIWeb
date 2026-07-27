@@ -188,149 +188,149 @@ with tab5:
         st.markdown("""
 * **1. Datasets (via Hugging Face):** 
 
-           
-           * English Conversation 22:
-              
-				https://huggingface.co/datasets/google/Synthetic-Persona-Chat
-				
-				https://huggingface.co/datasets/ParlAI/blended_skill_talk 
-				
-				https://huggingface.co/datasets/Organika/wizard_of_wikipedia
-                
-				https://huggingface.co/datasets/allenai/prosocial-dialog
-                
-				https://huggingface.co/datasets/allenai/soda
-                
-				https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
-     
-            
-           * AI related 5
-                
-				https://huggingface.co/datasets/databricks/databricks-dolly-15k
-                
-				https://huggingface.co/datasets/aps/super_glue
-                
-				https://huggingface.co/datasets/Salesforce/wikitext
-
-    
-           * Python 4-9
-                
-				https://huggingface.co/datasets/sentence-transformers/codesearchnet
-                
-				https://huggingface.co/datasets/iamtarun/code_instructions_120k_alpaca
-                
-				https://huggingface.co/datasets/Glint-Research/Fable-5-traces
-                
-				https://huggingface.co/datasets/Muennighoff/mbpp
-                
-				https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
-
-    
-           * Text generation : 
-                
-				https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
-
-    
-           * Wiki(science & common sense) 20:
-                
-				https://huggingface.co/datasets/allenai/sciq
-                
-				https://huggingface.co/datasets/allenai/openbookqa
-                
-				https://huggingface.co/datasets/allenai/qasc
-                
-				https://huggingface.co/datasets/allenai/ai2_arc
-                
-				https://huggingface.co/datasets/qiaojin/PubMedQA
-                
-				https://huggingface.co/datasets/hotpotqa/hotpot_qa
-                
-				https://huggingface.co/datasets/rajpurkar/squad_v2
-                
-				https://huggingface.co/datasets/google/boolq
-                
-				https://huggingface.co/datasets/ucinlp/drop
-                
-				https://huggingface.co/datasets/microsoft/wiki_qa
-                
-				https://huggingface.co/datasets/tau/commonsense_qa
-                
-				https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
-                
-				https://huggingface.co/datasets/allenai/winogrande
-                
-				https://huggingface.co/datasets/Rowan/hellaswag
-                
-				https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
-                
-				https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
-                
-				https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
-
-
-           * Math 1-6:
-                
-				https://huggingface.co/datasets/allenai/math_qa 
-                
-				https://huggingface.co/datasets/qwedsacf/competition_math
-                
-				https://huggingface.co/datasets/openai/gsm8k
-                
-				https://huggingface.co/datasets/cais/mmlu 
-
-
-           * First Person 20:
-                
-				https://huggingface.co/datasets/agentlans/first-person-dialogue
-                
-				https://huggingface.co/datasets/openbmb/UltraFeedback (Wait for doing)
-
-
-           * English literature 7 (optional) (not question and answer):
-                
-				https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
-                
-				http://huggingface.co/datasets/jimmyzxj/drosophila-literature-corpus
-                
-				https://huggingface.co/datasets/common-pile/pre_1929_books_filtered
-                
-				https://huggingface.co/datasets/schneewolflabs/hecke-dpo 
-                
-				https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
+   
+   * English Conversation 22:
+	  
+		https://huggingface.co/datasets/google/Synthetic-Persona-Chat
+		
+		https://huggingface.co/datasets/ParlAI/blended_skill_talk 
+		
+		https://huggingface.co/datasets/Organika/wizard_of_wikipedia
+		
+		https://huggingface.co/datasets/allenai/prosocial-dialog
+		
+		https://huggingface.co/datasets/allenai/soda
+		
+		https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
 
 	
-           * Humanizer : 
-            
-				https://huggingface.co/datasets/HuggingFaceH4/no_robots
-                
-				https://huggingface.co/datasets/openai/openai_humaneval - Accept the human prompts and reject the AI prompts
+   * AI related 5
+		
+		https://huggingface.co/datasets/databricks/databricks-dolly-15k
+		
+		https://huggingface.co/datasets/aps/super_glue
+		
+		https://huggingface.co/datasets/Salesforce/wikitext
 
-                
-           * Logic : 
-              
-				https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
-                
-                
+
+   * Python 4-9
+		
+		https://huggingface.co/datasets/sentence-transformers/codesearchnet
+		
+		https://huggingface.co/datasets/iamtarun/code_instructions_120k_alpaca
+		
+		https://huggingface.co/datasets/Glint-Research/Fable-5-traces
+		
+		https://huggingface.co/datasets/Muennighoff/mbpp
+		
+		https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
+
+
+   * Text generation : 
+		
+		https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
+
+
+   * Wiki(science & common sense) 20:
+		
+		https://huggingface.co/datasets/allenai/sciq
+		
+		https://huggingface.co/datasets/allenai/openbookqa
+		
+		https://huggingface.co/datasets/allenai/qasc
+		
+		https://huggingface.co/datasets/allenai/ai2_arc
+		
+		https://huggingface.co/datasets/qiaojin/PubMedQA
+		
+		https://huggingface.co/datasets/hotpotqa/hotpot_qa
+		
+		https://huggingface.co/datasets/rajpurkar/squad_v2
+		
+		https://huggingface.co/datasets/google/boolq
+		
+		https://huggingface.co/datasets/ucinlp/drop
+		
+		https://huggingface.co/datasets/microsoft/wiki_qa
+		
+		https://huggingface.co/datasets/tau/commonsense_qa
+		
+		https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
+		
+		https://huggingface.co/datasets/allenai/winogrande
+		
+		https://huggingface.co/datasets/Rowan/hellaswag
+		
+		https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
+		
+		https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
+		
+		https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
+
+
+   * Math 1-6:
+		
+		https://huggingface.co/datasets/allenai/math_qa 
+		
+		https://huggingface.co/datasets/qwedsacf/competition_math
+		
+		https://huggingface.co/datasets/openai/gsm8k
+		
+		https://huggingface.co/datasets/cais/mmlu 
+
+
+   * First Person 20:
+		
+		https://huggingface.co/datasets/agentlans/first-person-dialogue
+		
+		https://huggingface.co/datasets/openbmb/UltraFeedback (Wait for doing)
+
+
+   * English literature 7 (optional) (not question and answer):
+		
+		https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
+		
+		http://huggingface.co/datasets/jimmyzxj/drosophila-literature-corpus
+		
+		https://huggingface.co/datasets/common-pile/pre_1929_books_filtered
+		
+		https://huggingface.co/datasets/schneewolflabs/hecke-dpo 
+		
+		https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
+
+
+   * Humanizer : 
+	
+		https://huggingface.co/datasets/HuggingFaceH4/no_robots
+		
+		https://huggingface.co/datasets/openai/openai_humaneval - Accept the human prompts and reject the AI prompts
+
+		
+   * Logic : 
+	  
+		https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
+		
+		
 * **2. Websites & Research Frameworks**
 
 
-            * Streamlit Open-Source App Framework
-                Link: https://streamlit.io/
+	* Streamlit Open-Source App Framework
+		Link: https://streamlit.io/
 
 
 
 * **3. AI Tools Used In This Project**
 
 
-            * Eddie:
-                * GitHub Copilot (for VS Code): Inline code completions and suggestions
-                * Gemini: Research and learning how to build with Streamlit
+	* Eddie:
+		* GitHub Copilot (for VS Code): Inline code completions and suggestions
+		* Gemini: Research and learning how to build with Streamlit
 
-            * Roy:
-                * Gemini: Debugging
-                * Codex: Setting up the coding environment and hardware issues
-                * Claude: Aided with the building of the transformer architecture
-            
+	* Roy:
+		* Gemini: Debugging
+		* Codex: Setting up the coding environment and hardware issues
+		* Claude: Aided with the building of the transformer architecture
+	
         """
         )
 st.sidebar.markdown(f"**Logged in as:**<br>{st.session_state.user_email}", unsafe_allow_html=True)
