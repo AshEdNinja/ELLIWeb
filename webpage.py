@@ -297,7 +297,7 @@ def show_chat() -> None:
     if "confirm_clear" not in st.session_state:
         st.session_state.confirm_clear = False
 
-    conversation = '<div class="chat-shell"><div class="chat-title"><span><span class="online-dot"></span>ELLI conversation</span><span>v4.6.5</span></div>'
+    conversation = '<div class="chat-shell"><div class="chat-title"><span><span class="online-dot"></span>ELLI conversation</span><span>v4.6.7</span></div>'
     
     # 1. RENDER CHAT INTERFACE & THINKING LAYER
     for message in st.session_state.messages:
