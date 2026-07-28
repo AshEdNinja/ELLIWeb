@@ -354,7 +354,6 @@ def show_chat() -> None:
     think = True
     while think == True:
         with st.spinner("ELLI is thinking…"):
-            time.sleep(7.5)
             try:
                 system_instruction = {
                     "role": "system", 
