@@ -354,7 +354,8 @@ def show_chat() -> None:
         st.rerun()
 
     with st.spinner("ELLI is thinking…"):
-        try while think == True:
+        try:
+        while think == True:
             system_instruction = {
                 "role": "system", 
                 "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
