@@ -10,6 +10,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 from groq import Groq
 import auth
+
+think = True
 # --- PAGE CONFIGURATION ---
 ROOT = Path(__file__).parent
 st.set_page_config(
@@ -352,7 +354,7 @@ def show_chat() -> None:
         st.rerun()
 
     with st.spinner("ELLI is thinking…"):
-        try:
+        try while think == True:
             system_instruction = {
                 "role": "system", 
                 "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
