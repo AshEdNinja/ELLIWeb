@@ -381,7 +381,7 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": memory
+                    "content": i for i in memory
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
