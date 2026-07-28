@@ -395,7 +395,7 @@ def show_chat() -> None:
                 )
     
                 ai_reply = chat_completion.choices[0].message.content
-            think = True
+                think = True
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
                 
