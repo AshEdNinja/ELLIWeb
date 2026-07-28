@@ -371,14 +371,17 @@ def show_chat() -> None:
                 )
     
                 ai_think = chat_completion.choices[0].message.content
+                memory = []
+                for i in i:
+                    memory.append(ai_think)
             except Exception as e:
                 ai_think = f"Error connecting to the model: {str(e)}"
                 
-    if st.session_state.messages[-1]["role"] == "user"
+    if st.session_state.messages[-1]["role"] == "user":
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": ai_think
+                    "content": memory
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
