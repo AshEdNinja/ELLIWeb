@@ -381,7 +381,7 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": i for i in memory
+                    "content": ai_think
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
