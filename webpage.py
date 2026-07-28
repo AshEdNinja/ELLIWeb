@@ -358,7 +358,7 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags.", ai_think
+                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
