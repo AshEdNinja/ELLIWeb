@@ -365,7 +365,7 @@ def show_chat() -> None:
                 chat_completion = groq_client.chat.completions.create(
                     messages=api_messages,
                     model="llama-3.1-8b-instant",
-                    temperature=0.7,
+                    temperature=0.1,
                     max_tokens=1500,
                 )
     
@@ -383,7 +383,7 @@ def show_chat() -> None:
                 chat_completion = groq_client.chat.completions.create(
                     messages=api_messages,
                     model="llama-3.1-8b-instant",
-                    temperature=0.7,
+                    temperature=0.1,
                     max_tokens=1500,
                 )
     
