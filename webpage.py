@@ -352,7 +352,7 @@ def show_chat() -> None:
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.rerun()
     think = True
-    while think:
+    while think = True:
         with st.spinner("ELLI is thinking…"):
             time.sleep(7.5)
             try:
