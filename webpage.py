@@ -355,7 +355,6 @@ def show_chat() -> None:
 
     with st.spinner("ELLI is thinking…"):
         try:
-        while think == True:
             system_instruction = {
                 "role": "system", 
                 "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
@@ -369,13 +368,13 @@ def show_chat() -> None:
                 temperature=0.1,
                 max_tokens=1500,
             )
-
-            ai_think = chat_completion.choices[0].message.content
-            memory = []
-            for i in i:
-                memory.append(ai_think)
-        except Exception as e:
-            ai_think = f"Error connecting to the model: {str(e)}"
+            while think == True:
+                ai_think = chat_completion.choices[0].message.content
+                memory = []
+                for i in i:
+                    memory.append(ai_think)
+            except Exception as e:
+                ai_think = f"Error connecting to the model: {str(e)}"
                 
     if st.session_state.messages[-1]["role"] == "user":
             think = False
