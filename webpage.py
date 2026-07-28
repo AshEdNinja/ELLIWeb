@@ -372,9 +372,6 @@ def show_chat() -> None:
                 ai_think = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_think = f"Error connecting to the model: {str(e)}"
-
-        if st.session_state.messages[-1]["role"] == "user":
-        with st.spinner("ELLI is speaking…"):
             try:
                 system_instruction = {
                     "role": "system", 
