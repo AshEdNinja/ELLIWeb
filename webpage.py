@@ -369,6 +369,27 @@ def show_chat() -> None:
                     max_tokens=1500,
                 )
     
+                ai_think = chat_completion.choices[0].message.content
+            except Exception as e:
+                ai_think = f"Error connecting to the model: {str(e)}"
+
+        if st.session_state.messages[-1]["role"] == "user":
+        with st.spinner("ELLI is speaking…"):
+            try:
+                system_instruction = {
+                    "role": "system", 
+                    "content": ai_think
+                }
+                
+                api_messages = [system_instruction] + st.session_state.messages
+                
+                chat_completion = groq_client.chat.completions.create(
+                    messages=api_messages,
+                    model="llama-3.1-8b-instant",
+                    temperature=0.7,
+                    max_tokens=1500,
+                )
+    
                 ai_reply = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
