@@ -290,7 +290,7 @@ except Exception as e:
 
 # Chat Initialization
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. Nice to meet you."}]
 
 
 def show_chat() -> None:
@@ -357,7 +357,7 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": "You are ELLI, a hyper-adaptable AI agent. For every user message, you MUST output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags BEFORE providing your final response to the user."
+                    "content": "You are ELLI, a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags."
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
@@ -368,6 +368,7 @@ def show_chat() -> None:
                     temperature=0.7,
                     max_tokens=1500,
                 )
+    
                 ai_reply = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
