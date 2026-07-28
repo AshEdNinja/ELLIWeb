@@ -118,7 +118,7 @@ if "user_email" not in st.session_state:
 if "current_chat_id" not in st.session_state:
     st.session_state.current_chat_id = str(uuid.uuid4())
 
-think = True
+
 # --- 4. LOGIN PAGE FUNCTION ---
 def show_login_page():
     st.markdown("<h2 style='text-align: center; color: #a8c7fa; padding-top: 5rem;'>Welcome to ELLI</h2>", unsafe_allow_html=True)
