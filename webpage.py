@@ -224,7 +224,7 @@ st.sidebar.divider()
 # New Chat Button
 if st.sidebar.button("+ New Chat", use_container_width=True):
     st.session_state.current_chat_id = str(uuid.uuid4())
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. Nice to meet you."}]
     st.rerun()
 
 
@@ -290,7 +290,7 @@ except Exception as e:
 
 # Chat Initialization
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI."}]
 
 
 def show_chat() -> None:
@@ -357,7 +357,7 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": "You are ELLI, a hyper-adaptable AI agent. For every user message, you MUST output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags BEFORE providing your final response to the user."
+                    "content": "You are ELLI(Evolving Language Learning Intelligence), a hyper-adaptable AI agent. For every user message, you MUST and only output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags BEFORE providing your final response to the user."
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
