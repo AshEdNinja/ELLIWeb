@@ -354,7 +354,7 @@ def show_chat() -> None:
     think = True
     while think:
         with st.spinner("ELLI is thinking…"):
-            time.sleep(2.5)
+            time.sleep(7.5)
             try:
                 system_instruction = {
                     "role": "system", 
@@ -378,7 +378,7 @@ def show_chat() -> None:
                 ai_think = f"Error connecting to the model: {str(e)}"
                 
     if st.session_state.messages[-1]["role"] == "user":
-        think = False
+            think = False
             try:
                 system_instruction = {
                     "role": "system", 
@@ -395,7 +395,7 @@ def show_chat() -> None:
                 )
     
                 ai_reply = chat_completion.choices[0].message.content
-        think = True
+            think = True
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
                 
