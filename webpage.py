@@ -351,13 +351,14 @@ def show_chat() -> None:
         st.session_state.confirm_clear = False
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.rerun()
-
-    if st.session_state.messages[-1]["role"] == "user":
+    think = True
+    if think:
         with st.spinner("ELLI is thinking…"):
+            time.sleep(2.5)
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also fact double check wrapped exactly inside <think>...</think> tags."
+                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags.", ai_think
                 }
                 
                 api_messages = [system_instruction] + st.session_state.messages
@@ -372,6 +373,8 @@ def show_chat() -> None:
                 ai_think = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_think = f"Error connecting to the model: {str(e)}"
+                
+    if st.session_state.messages[-1]["role"] == "user"
             try:
                 system_instruction = {
                     "role": "system", 
