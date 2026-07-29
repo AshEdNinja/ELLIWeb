@@ -122,17 +122,17 @@ if "current_chat_id" not in st.session_state:
 # --- 4. LOGIN PAGE FUNCTION ---
 def show_login_page():
     st.markdown("<h2 style='text-align: center; color: #a8c7fa; padding-top: 5rem;'>Welcome to ELLI</h2>", unsafe_allow_html=True)
-    
+
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         tab1, tab2, tab3 = st.tabs(["Login", "Sign Up", "Forgot Password"])
-        
+
         with tab1:
             with st.form("login_form"):
                 login_email = st.text_input("Email", key="login_email_input")
                 login_pass = st.text_input("Password", type="password", key="login_pass_input")
                 submitted = st.form_submit_button("Login", key="login_submit_btn")
-                
+
                 if submitted:
                     with st.spinner("Authenticating..."):
                         success, result = auth.verify_user(login_email, login_pass)
@@ -143,14 +143,14 @@ def show_login_page():
                             st.rerun()
                         else:
                             st.error(result)
-                        
+
         with tab2:
             with st.form("signup_form"):
                 new_email = st.text_input("Email", key="signup_email_input")
                 new_pass = st.text_input("Choose a Password", type="password", key="signup_pass_input")
                 confirm_pass = st.text_input("Confirm Password", type="password", key="signup_confirm_pass_input")
                 signup_submitted = st.form_submit_button("Create Account", key="signup_submit_btn")
-                
+
                 if signup_submitted:
                     if new_pass != confirm_pass:
                         st.error("Passwords do not match.")
@@ -170,7 +170,7 @@ def show_login_page():
                 st.markdown("Enter your email address to receive a password reset link.")
                 reset_email = st.text_input("Email", key="reset_email_input")
                 reset_submitted = st.form_submit_button("Send Reset Link", key="reset_submit_btn")
-                
+
                 if reset_submitted:
                     with st.spinner("Sending link..."):
                         success, message = auth.send_password_reset(reset_email)
@@ -199,7 +199,7 @@ with st.sidebar.expander("Update Your Password", expanded=False):
         update_pass = st.text_input("New Password", type="password", key="update_pass_input")
         update_confirm = st.text_input("Confirm Password", type="password", key="update_confirm_input")
         update_submitted = st.form_submit_button("Update Password", key="update_submit_btn")
-        
+
         if update_submitted:
             if update_pass != update_confirm:
                 st.error("Passwords do not match.")
@@ -224,7 +224,7 @@ st.sidebar.divider()
 # New Chat Button
 if st.sidebar.button("+ New Chat", use_container_width=True):
     st.session_state.current_chat_id = str(uuid.uuid4())
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. Nice to meet you."}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
     st.rerun()
 
 
@@ -290,7 +290,7 @@ except Exception as e:
 
 # Chat Initialization
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI."}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. Nice to meet you."}]
 
 
 def show_chat() -> None:
@@ -298,17 +298,17 @@ def show_chat() -> None:
         st.session_state.confirm_clear = False
 
     conversation = '<div class="chat-shell"><div class="chat-title"><span><span class="online-dot"></span>ELLI conversation</span><span>v4.6.8</span></div>'
-    
+
     # 1. RENDER CHAT INTERFACE & THINKING LAYER
     for message in st.session_state.messages:
         if message["role"] == "assistant":
             content = message["content"]
             think_match = re.search(r'<think>(.*?)</think>', content, re.DOTALL)
-            
+
             if think_match:
                 thinking_text = think_match.group(1).strip()
                 final_answer = content.replace(think_match.group(0), "").strip()
-                
+
                 formatted_content = f'''
                 <details style="margin-bottom: 12px; cursor: pointer;">
                     <summary style="font-size: 0.75rem; color: #1ee5aa; font-family: 'DM Mono', monospace; text-transform: uppercase;"> View ELLI Cognition</summary>
@@ -318,11 +318,11 @@ def show_chat() -> None:
                 '''
             else:
                 formatted_content = f'<div style="white-space: pre-wrap;">{escape(content)}</div>'
-                
+
             conversation += f'<div class="message assistant-message"><span class="message-label">ELLI reply</span>{formatted_content}</div>'
         else:
             conversation += f'<div class="message user-message"><span class="message-label">Your message</span><div style="white-space: pre-wrap;">{escape(message["content"])}</div></div>'
-            
+
     st.markdown(conversation + "</div>", unsafe_allow_html=True)
 
     # 2. CLEAR CONVERSATION LOGIC
@@ -357,27 +357,36 @@ def show_chat() -> None:
             try:
                 system_instruction = {
                     "role": "system", 
-                    "content": "You are ELLI(Evolving Language Learning Intelligence), a hyper-adaptable AI agent. For every user message, you MUST and only output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags BEFORE providing your final response to the user."
+                    "content": "You are ELLI, a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags."
                 }
-                
+
                 api_messages = [system_instruction] + st.session_state.messages
-                
+
+                chat_completion = groq_client.chat.completions.create(
+                    messages=api_messages,
+                    model="llama-3.1-8b-instant",
+                    temperature=0.1,
+                    max_tokens=1500,
+                )
+
+@@ -383,49 +383,49 @@
                 chat_completion = groq_client.chat.completions.create(
                     messages=api_messages,
                     model="llama-3.1-8b-instant",
                     temperature=0.7,
                     max_tokens=1500,
                 )
+
                 ai_reply = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
-                
+
             st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-            
+
             try:
                 title_text = st.session_state.messages[1]["content"] if len(st.session_state.messages) > 1 else "New Chat"
                 chat_title = (title_text[:25] + "...") if len(title_text) > 25 else title_text
-                
+
                 client = auth.get_client()
                 client.table("chats").upsert({
                     "id": st.session_state.current_chat_id,
@@ -387,7 +396,7 @@ def show_chat() -> None:
                 }).execute()
             except Exception as e:
                 print(f"Database save error: {e}")
-                
+
             st.rerun()
 
 
