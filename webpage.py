@@ -253,7 +253,7 @@ with st.sidebar.expander("Personalization", expanded=False):
             value=current_profile.get("description", ""),
             height=120,
             key="profile_description_input",
-            placeholder="Share a little about yourself so ELLI can personalize responses.",
+            placeholder="Edit how ELLI remembers you.",
         )
         submitted = st.form_submit_button("Save Profile", use_container_width=True)
 
@@ -267,7 +267,7 @@ with st.sidebar.expander("Personalization", expanded=False):
     if current_profile.get("username") or current_profile.get("description"):
         st.caption("ELLI will use this profile to personalize replies across chats.")
     else:
-        st.caption("No profile saved yet. ELLI will still work, just with a more general experience.")
+        st.caption("Without a profile, your ELLI experience will be more generalized.")
 
 with st.sidebar.expander("Update Your Password", expanded=False):
     with st.form("change_password_form"):
