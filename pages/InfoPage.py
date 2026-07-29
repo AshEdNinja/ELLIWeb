@@ -78,7 +78,6 @@ st.markdown(
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; }
         
-        /* Fixed CSS typo here */
         .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #181b1a 32rem); color:#f5f7f5;} 
         
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
@@ -166,14 +165,29 @@ with tab4:
     if proposal.exists():
         pdf_data = base64.b64encode(proposal.read_bytes()).decode("utf-8")
         
-        # --- THE FIX: Standard iframe logic injected securely ---
-        pdf_display = f'<iframe src="data:application/pdf;base64,{pdf_data}" width="100%" height="650" style="border:none; border-radius:12px;"></iframe>'
-        st.markdown(pdf_display, unsafe_allow_html=True)
-        # --------------------------------------------------------
+        # --- THE FIX: JS Blob URL injection ---
+        # This converts the base64 string into an in-memory browser file, bypassing Chrome's data: URI restrictions.
+        blob_pdf_html = f"""
+        <script>
+            const b64 = "{pdf_data}";
+            const byteCharacters = atob(b64);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {{
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }}
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], {{type: 'application/pdf'}});
+            const url = URL.createObjectURL(blob);
+            
+            document.write(`<iframe src="${{url}}" width="100%" height="650px" style="border:none; border-radius:12px;"></iframe>`);
+        </script>
+        """
+        components.html(blob_pdf_html, height=665)
+        # ----------------------------------------
         
         st.download_button("Download the ELLI proposal (PDF)", proposal.read_bytes(), file_name=proposal.name, mime="application/pdf")
     else:
-        st.warning(f"Proposal PDF not found at {proposal}")
+        st.warning(f"Proposal PDF not found at {proposal.name}")
 
 with tab5:
     st.markdown("### Works Cited & Acknowledgements")
