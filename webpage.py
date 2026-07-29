@@ -244,7 +244,7 @@ st.sidebar.markdown(f"**Logged in as:**<br>{st.session_state.user_email}", unsaf
 
 load_user_profile()
 
-with st.sidebar.expander("Your AI Profile", expanded=False):
+with st.sidebar.expander("Personalization", expanded=False):
     current_profile = st.session_state.get("user_profile", {"username": "", "description": ""})
     with st.form("profile_form", clear_on_submit=False):
         username = st.text_input("Username", value=current_profile.get("username", ""), key="profile_username_input")
