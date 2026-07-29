@@ -23,6 +23,10 @@ st.set_page_config(
 # --- 1. INITIALIZE API CLIENTS ---
 groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
+
+
+
+
 # --- 2. GLOBAL UI SETTINGS ---
 components.html(
     """
@@ -77,25 +81,6 @@ st.markdown(
         .user-message { background:transparent; border:1px solid #86aaa0; border-bottom-right-radius:.35rem; color:var(--mint); margin-left:auto; }
         .message-label { display:block; font:500 .65rem "DM Mono",monospace; letter-spacing:.1em; opacity:.72; text-transform:uppercase; margin-bottom:.38rem; }
         
-        /* FIX FOR BORDER GLITCH (REMOVED ENTIRELY) */
-        [data-testid="stChatInput"] { 
-            border: none !important; 
-            border-radius: 1.5rem !important;
-            margin-top: 1.3rem;
-            background: #202523 !important;
-            box-shadow: none !important;
-        }
-        [data-testid="stChatInput"]:focus,
-        [data-testid="stChatInput"]:focus-within,
-        [data-testid="stChatInput"]:active { 
-            border: none !important; 
-            box-shadow: none !important; 
-        }
-        /* Override Streamlit's inner focused div */
-        [data-testid="stChatInput"] > div {
-            border: none !important;
-            box-shadow: none !important;
-        }
         [data-testid="stChatInput"] textarea { color:var(--mint)!important; font:500 1.1rem "Space Grotesk",sans-serif!important; }
         [data-testid="stChatInput"] button { background:var(--mint); border-radius:50%; transition:background-color .2s ease, opacity .2s ease; }
         [data-testid="stChatInput"] button:disabled { background:#6b756f!important; opacity:.8; cursor:not-allowed!important; box-shadow:none!important; }
@@ -117,9 +102,71 @@ if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 if "current_chat_id" not in st.session_state:
     st.session_state.current_chat_id = str(uuid.uuid4())
+if "user_profile" not in st.session_state:
+    st.session_state.user_profile = {"username": "", "description": ""}
 
 
-# --- 4. LOGIN PAGE FUNCTION ---
+# --- 4. PROFILE HELPERS ---
+def load_user_profile() -> None:
+    if not st.session_state.get("user_email"):
+        return
+
+    if st.session_state.get("user_profile") and st.session_state.user_profile.get("username") or st.session_state.user_profile.get("description"):
+        return
+
+    st.session_state.user_profile = {"username": "", "description": ""}
+    try:
+        client = auth.get_client()
+        response = client.table("user_profiles").select("username, description").eq("user_email", st.session_state.user_email).execute()
+        if response.data:
+            profile_data = response.data[0]
+            st.session_state.user_profile = {
+                "username": (profile_data.get("username") or "").strip(),
+                "description": (profile_data.get("description") or "").strip(),
+            }
+    except Exception:
+        # Keep the UI working even if the profile table is not available yet.
+        pass
+
+
+def save_user_profile(username: str, description: str):
+    if not st.session_state.get("user_email"):
+        return False, "Please log in before saving your profile."
+
+    cleaned_profile = {
+        "username": username.strip(),
+        "description": description.strip(),
+    }
+    st.session_state.user_profile = cleaned_profile
+
+    try:
+        client = auth.get_client()
+        client.table("user_profiles").upsert({
+            "user_email": st.session_state.user_email,
+            "username": cleaned_profile["username"],
+            "description": cleaned_profile["description"],
+        }, on_conflict="user_email").execute()
+        return True, "Profile saved. ELLI will remember it across chats."
+    except Exception as e:
+        return True, f"Profile saved for this session. ELLI will remember it across chats here. ({e})"
+
+
+def build_profile_context() -> str:
+    profile = st.session_state.get("user_profile", {"username": "", "description": ""})
+    username = (profile.get("username") or "").strip()
+    description = (profile.get("description") or "").strip()
+
+    if not username and not description:
+        return "The user has not shared any personal profile details yet. Keep responses helpful and general."
+
+    parts = []
+    if username:
+        parts.append(f"The user's chosen username is {username}.")
+    if description:
+        parts.append(f"The user describes themselves as: {description}")
+    return "Use the following profile context to personalize the conversation when appropriate: " + " ".join(parts)
+
+
 def show_login_page():
     st.markdown("<h2 style='text-align: center; color: #a8c7fa; padding-top: 5rem;'>Welcome to ELLI</h2>", unsafe_allow_html=True)
     
@@ -140,6 +187,8 @@ def show_login_page():
                             st.session_state.logged_in = True
                             st.session_state.user_email = login_email
                             st.session_state.current_chat_id = str(uuid.uuid4())
+                            st.session_state.user_profile = {"username": "", "description": ""}
+                            load_user_profile()
                             st.rerun()
                         else:
                             st.error(result)
@@ -193,6 +242,32 @@ if not st.session_state.logged_in:
 # Sidebar Controls & History
 st.sidebar.markdown(f"**Logged in as:**<br>{st.session_state.user_email}", unsafe_allow_html=True)
 
+load_user_profile()
+
+with st.sidebar.expander("Your AI Profile", expanded=False):
+    current_profile = st.session_state.get("user_profile", {"username": "", "description": ""})
+    with st.form("profile_form", clear_on_submit=False):
+        username = st.text_input("Username", value=current_profile.get("username", ""), key="profile_username_input")
+        description = st.text_area(
+            "About you",
+            value=current_profile.get("description", ""),
+            height=120,
+            key="profile_description_input",
+            placeholder="Share a little about yourself so ELLI can personalize responses.",
+        )
+        submitted = st.form_submit_button("Save Profile", use_container_width=True)
+
+        if submitted:
+            success, message = save_user_profile(username, description)
+            if success:
+                st.success(message)
+            else:
+                st.error(message)
+
+    if current_profile.get("username") or current_profile.get("description"):
+        st.caption("ELLI will use this profile to personalize replies across chats.")
+    else:
+        st.caption("No profile saved yet. ELLI will still work, just with a more general experience.")
 
 with st.sidebar.expander("Update Your Password", expanded=False):
     with st.form("change_password_form"):
@@ -215,6 +290,8 @@ with st.sidebar.expander("Update Your Password", expanded=False):
     if st.sidebar.button("Logout", key="logout_sidebar_btn"):
         st.session_state.logged_in = False
         st.session_state.user_email = ""
+        st.session_state.user_profile = {"username": "", "description": ""}
+        # FIX: Use the new isolated client to sign out
         auth.get_client().auth.sign_out()
         st.rerun()
 
@@ -233,6 +310,7 @@ def delete_all_chats_for_user():
         return False, "Please log in before deleting chats."
 
     try:
+        # FIX: Use the new isolated client for queries
         client = auth.get_client()
         res = client.table("chats").delete().eq("user_email", st.session_state.user_email).execute()
         if getattr(res, "error", None):
@@ -272,6 +350,7 @@ st.sidebar.markdown("### Chat History")
 
 # Load history from Supabase
 try:
+    # FIX: Use the new isolated client for queries
     client = auth.get_client()
     history_res = client.table("chats").select("id, title").eq("user_email", st.session_state.user_email).order("created_at", desc=True).execute()
     if history_res.data:
@@ -290,14 +369,14 @@ except Exception as e:
 
 # Chat Initialization
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. Nice to meet you."}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am ELLI. What would you like to explore today?"}]
 
 
 def show_chat() -> None:
     if "confirm_clear" not in st.session_state:
         st.session_state.confirm_clear = False
 
-    conversation = '<div class="chat-shell"><div class="chat-title"><span><span class="online-dot"></span>ELLI conversation</span><span>v4.6.8</span></div>'
+    conversation = '<div class="chat-shell"><div class="chat-title"><span><span class="online-dot"></span>ELLI conversation</span><span>v4.6.5</span></div>'
     
     # 1. RENDER CHAT INTERFACE & THINKING LAYER
     for message in st.session_state.messages:
@@ -355,40 +434,24 @@ def show_chat() -> None:
     if st.session_state.messages[-1]["role"] == "user":
         with st.spinner("ELLI is thinking…"):
             try:
-                # --- PHASE 1: GENERATE THOUGHTS ---
-                system_instruction_think = {
-                    "role": "system", 
-                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
+                profile_context = build_profile_context()
+                system_instruction = {
+                    "role": "system",
+                    "content": (
+                        "You are ELLI, a hyper-adaptable AI agent. For every user message, you MUST output your internal thoughts and logic process wrapped exactly inside <think>...</think> tags BEFORE providing your final response to the user. "
+                        f"{profile_context}"
+                    ),
                 }
                 
-                api_messages_think = [system_instruction_think] + st.session_state.messages
+                api_messages = [system_instruction] + st.session_state.messages
                 
-                chat_completion_think = groq_client.chat.completions.create(
-                    messages=api_messages_think,
+                chat_completion = groq_client.chat.completions.create(
+                    messages=api_messages,
                     model="llama-3.1-8b-instant",
-                    temperature=0.1,
+                    temperature=0.7,
                     max_tokens=1500,
                 )
-                
-                ai_think = chat_completion_think.choices[0].message.content
-                
-                # --- PHASE 2: GENERATE RESPONSE BASED ON THOUGHTS ---
-                system_instruction_reply = {
-                    "role": "system", 
-                    "content": ai_think
-                }
-                
-                api_messages_reply = [system_instruction_reply] + st.session_state.messages
-                
-                chat_completion_reply = groq_client.chat.completions.create(
-                    messages=api_messages_reply,
-                    model="llama-3.1-8b-instant",
-                    temperature=0.1,
-                    max_tokens=1500,
-                )
-                
-                ai_reply = chat_completion_reply.choices[0].message.content
-                
+                ai_reply = chat_completion.choices[0].message.content
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
                 
@@ -398,6 +461,7 @@ def show_chat() -> None:
                 title_text = st.session_state.messages[1]["content"] if len(st.session_state.messages) > 1 else "New Chat"
                 chat_title = (title_text[:25] + "...") if len(title_text) > 25 else title_text
                 
+                # FIX: Use the new isolated client for queries
                 client = auth.get_client()
                 client.table("chats").upsert({
                     "id": st.session_state.current_chat_id,
