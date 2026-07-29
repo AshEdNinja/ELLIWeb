@@ -11,7 +11,6 @@ import streamlit.components.v1 as components
 from groq import Groq
 import auth
 
-think = True
 # --- PAGE CONFIGURATION ---
 ROOT = Path(__file__).parent
 st.set_page_config(
@@ -353,46 +352,43 @@ def show_chat() -> None:
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.rerun()
 
-    with st.spinner("ELLI is thinking…"):
-        try:
-            system_instruction = {
-                "role": "system", 
-                "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
-            }
-            
-            api_messages = [system_instruction] + st.session_state.messages
-            
-            chat_completion = groq_client.chat.completions.create(
-                messages=api_messages,
-                model="llama-3.1-8b-instant",
-                temperature=0.1,
-                max_tokens=1500,
-            )
-            while think == True:
-                ai_think = chat_completion.choices[0].message.content
-                memory = []
-                for i in i:
-                    memory.append(ai_think)
-                
     if st.session_state.messages[-1]["role"] == "user":
-            think = False
+        with st.spinner("ELLI is thinking…"):
             try:
-                system_instruction = {
+                # --- PHASE 1: GENERATE THOUGHTS ---
+                system_instruction_think = {
                     "role": "system", 
-                    "content": ai_think
+                    "content": "You are ELLI (Evolving Language Learning Model, but could also be Ellie), a hyper-adaptable AI agent. For every user message, you MUST and ONLY output your internal thoughts and logic process and also summarize context from previous thought in a neutral tone wrapped exactly inside <think>...</think> tags."
                 }
                 
-                api_messages = [system_instruction] + st.session_state.messages
+                api_messages_think = [system_instruction_think] + st.session_state.messages
                 
-                chat_completion = groq_client.chat.completions.create(
-                    messages=api_messages,
+                chat_completion_think = groq_client.chat.completions.create(
+                    messages=api_messages_think,
                     model="llama-3.1-8b-instant",
                     temperature=0.1,
                     max_tokens=1500,
                 )
-    
-                ai_reply = chat_completion.choices[0].message.content
-                think = True
+                
+                ai_think = chat_completion_think.choices[0].message.content
+                
+                # --- PHASE 2: GENERATE RESPONSE BASED ON THOUGHTS ---
+                system_instruction_reply = {
+                    "role": "system", 
+                    "content": ai_think
+                }
+                
+                api_messages_reply = [system_instruction_reply] + st.session_state.messages
+                
+                chat_completion_reply = groq_client.chat.completions.create(
+                    messages=api_messages_reply,
+                    model="llama-3.1-8b-instant",
+                    temperature=0.1,
+                    max_tokens=1500,
+                )
+                
+                ai_reply = chat_completion_reply.choices[0].message.content
+                
             except Exception as e:
                 ai_reply = f"Error connecting to the model: {str(e)}"
                 
