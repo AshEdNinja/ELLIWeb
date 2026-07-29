@@ -22,14 +22,6 @@ if "logged_in" not in st.session_state:
 if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 
-try:
-    session = auth.supabase.auth.get_session()
-    if session:
-        st.session_state.logged_in = True
-        st.session_state.user_email = session.user.email
-except Exception:
-    pass
-
 if not st.session_state.logged_in:
     st.error("Please log in from the main interface to view this page.")
     st.page_link("webpage.py", label="Return to Login", icon="🔒")
@@ -77,7 +69,7 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; }
-        # .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #181b1a 32rem); color:#f5f7f5;} 
+        .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #181b1a 32rem); color:#f5f7f5;} 
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
         .block-container { max-width:1400px; padding:2rem 3.5rem 2rem; position: relative; z-index: 10; }
         
@@ -133,17 +125,6 @@ st.markdown(
 
 tab2, tab3, tab4, tab5 = st.tabs([ "Stats for Nerds", "Creators", "Proposal", "Sources"])
 
-# with tab1:
-#     feature_cols = st.columns(3)
-#     feature_items = [
-#         ("Spontaneous Learning", "ELLI continuously fine-tunes itself. By reviewing historical chats and data inputs, it adapts its weights and memory spontaneously without requiring massive, separate training loops."),
-#         ("Cognition & Introspection", "Operating on a dual-stage Transformer architecture, a separate, constantly-running thinking layer processes context and pushes optimized instructions directly to the output generation layer."),
-#         ("Lightweight & Agile", "Built as a lean 300-million parameter model using bf16 format, ELLI can run its internal cognition loops around the clock while staying responsive and efficient."),
-#     ]
-#     for column, (title, body) in zip(feature_cols, feature_items):
-#         with column:
-#             st.markdown(f'<div class="feature-card"><h3>{title}</h3><p>{body}</p></div>', unsafe_allow_html=True)
-
 with tab2:
     st.markdown("### ELLI’s thinking layer")
     st.info("Model WIP")
@@ -173,10 +154,15 @@ with tab4:
     proposal = ROOT / "_Proposal of ELLI.pdf"
     if proposal.exists():
         pdf_data = base64.b64encode(proposal.read_bytes()).decode("utf-8")
-        components.html(f'<iframe src="data:application/pdf;base64,{pdf_data}" width="100%" height="650" style="border:0;border-radius:12px;"></iframe>', height=665)
+        
+        # --- THE FIX: Using st.markdown with <embed> to bypass Chrome's sandbox block ---
+        pdf_display = f'<embed src="data:application/pdf;base64,{pdf_data}" width="100%" height="650" type="application/pdf" style="border-radius:12px; border:none;"></embed>'
+        st.markdown(pdf_display, unsafe_allow_html=True)
+        # --------------------------------------------------------------------------------
+        
         st.download_button("Download the ELLI proposal (PDF)", proposal.read_bytes(), file_name=proposal.name, mime="application/pdf")
     else:
-        st.warning(f"Proposal PDF not found at {proposal}")
+        st.warning(f"Proposal PDF not found at {proposal.name}")
 
 with tab5:
     st.markdown("### Works Cited & Acknowledgements")
@@ -190,146 +176,146 @@ with tab5:
 
    
    * English Conversation:
-	  
-		https://huggingface.co/datasets/google/Synthetic-Persona-Chat
-		
-		https://huggingface.co/datasets/ParlAI/blended_skill_talk 
-		
-		https://huggingface.co/datasets/Organika/wizard_of_wikipedia
-		
-		https://huggingface.co/datasets/allenai/prosocial-dialog
-		
-		https://huggingface.co/datasets/allenai/soda
-		
-		https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
+      
+        https://huggingface.co/datasets/google/Synthetic-Persona-Chat
+        
+        https://huggingface.co/datasets/ParlAI/blended_skill_talk 
+        
+        https://huggingface.co/datasets/Organika/wizard_of_wikipedia
+        
+        https://huggingface.co/datasets/allenai/prosocial-dialog
+        
+        https://huggingface.co/datasets/allenai/soda
+        
+        https://huggingface.co/datasets/ianncity/GLM-5.2-Conversation
 
-	
+    
    * AI related:
-		
-		https://huggingface.co/datasets/databricks/databricks-dolly-15k
-		
-		https://huggingface.co/datasets/aps/super_glue
-		
-		https://huggingface.co/datasets/Salesforce/wikitext
+        
+        https://huggingface.co/datasets/databricks/databricks-dolly-15k
+        
+        https://huggingface.co/datasets/aps/super_glue
+        
+        https://huggingface.co/datasets/Salesforce/wikitext
 
 
    * Python:
-		
-		https://huggingface.co/datasets/sentence-transformers/codesearchnet
-		
-		https://huggingface.co/datasets/iamtarun/code_instructions_120k_alpaca
-		
-		https://huggingface.co/datasets/Glint-Research/Fable-5-traces
-		
-		https://huggingface.co/datasets/Muennighoff/mbpp
-		
-		https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
+        
+        https://huggingface.co/datasets/sentence-transformers/codesearchnet
+        
+        https://huggingface.co/datasets/iamtarun/code_instructions_120k_alpaca
+        
+        https://huggingface.co/datasets/Glint-Research/Fable-5-traces
+        
+        https://huggingface.co/datasets/Muennighoff/mbpp
+        
+        https://huggingface.co/datasets/MoreThought/Fable-5-Max-Reasoning-Filtered 
 
 
    * Text generation: 
-		
-		https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
+        
+        https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf
 
 
    * Wiki:
-		
-		https://huggingface.co/datasets/allenai/sciq
-		
-		https://huggingface.co/datasets/allenai/openbookqa
-		
-		https://huggingface.co/datasets/allenai/qasc
-		
-		https://huggingface.co/datasets/allenai/ai2_arc
-		
-		https://huggingface.co/datasets/qiaojin/PubMedQA
-		
-		https://huggingface.co/datasets/hotpotqa/hotpot_qa
-		
-		https://huggingface.co/datasets/rajpurkar/squad_v2
-		
-		https://huggingface.co/datasets/google/boolq
-		
-		https://huggingface.co/datasets/ucinlp/drop
-		
-		https://huggingface.co/datasets/microsoft/wiki_qa
-		
-		https://huggingface.co/datasets/tau/commonsense_qa
-		
-		https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
-		
-		https://huggingface.co/datasets/allenai/winogrande
-		
-		https://huggingface.co/datasets/Rowan/hellaswag
-		
-		https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
-		
-		https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
-		
-		https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
+        
+        https://huggingface.co/datasets/allenai/sciq
+        
+        https://huggingface.co/datasets/allenai/openbookqa
+        
+        https://huggingface.co/datasets/allenai/qasc
+        
+        https://huggingface.co/datasets/allenai/ai2_arc
+        
+        https://huggingface.co/datasets/qiaojin/PubMedQA
+        
+        https://huggingface.co/datasets/hotpotqa/hotpot_qa
+        
+        https://huggingface.co/datasets/rajpurkar/squad_v2
+        
+        https://huggingface.co/datasets/google/boolq
+        
+        https://huggingface.co/datasets/ucinlp/drop
+        
+        https://huggingface.co/datasets/microsoft/wiki_qa
+        
+        https://huggingface.co/datasets/tau/commonsense_qa
+        
+        https://huggingface.co/datasets/ChilleD/StrategyQA/viewer/default/train?row=10
+        
+        https://huggingface.co/datasets/allenai/winogrande
+        
+        https://huggingface.co/datasets/Rowan/hellaswag
+        
+        https://huggingface.co/datasets/EleutherAI/race/viewer/high/test?row=0
+        
+        https://huggingface.co/datasets/ianncity/GLM-5.2-Science 
+        
+        https://huggingface.co/datasets/MuskumPillerum/General-Knowledge 
 
 
    * Math:
-		
-		https://huggingface.co/datasets/allenai/math_qa 
-		
-		https://huggingface.co/datasets/qwedsacf/competition_math
-		
-		https://huggingface.co/datasets/openai/gsm8k
-		
-		https://huggingface.co/datasets/cais/mmlu 
+        
+        https://huggingface.co/datasets/allenai/math_qa 
+        
+        https://huggingface.co/datasets/qwedsacf/competition_math
+        
+        https://huggingface.co/datasets/openai/gsm8k
+        
+        https://huggingface.co/datasets/cais/mmlu 
 
 
    * First Person:
-		
-		https://huggingface.co/datasets/agentlans/first-person-dialogue
-		
-		https://huggingface.co/datasets/openbmb/UltraFeedback
+        
+        https://huggingface.co/datasets/agentlans/first-person-dialogue
+        
+        https://huggingface.co/datasets/openbmb/UltraFeedback
 
 
    * English literature:
-		
-		https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
-		
-		http://huggingface.co/datasets/jimmyzxj/drosophila-literature-corpus
-		
-		https://huggingface.co/datasets/common-pile/pre_1929_books_filtered
-		
-		https://huggingface.co/datasets/schneewolflabs/hecke-dpo 
-		
-		https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
+        
+        https://huggingface.co/datasets/ExponentialScience/DLT-Scientific-Literature
+        
+        http://huggingface.co/datasets/jimmyzxj/drosophila-literature-corpus
+        
+        https://huggingface.co/datasets/common-pile/pre_1929_books_filtered
+        
+        https://huggingface.co/datasets/schneewolflabs/hecke-dpo 
+        
+        https://huggingface.co/datasets/common-pile/project_gutenberg_filtered 
 
 
    * Humanizer : 
-	
-		https://huggingface.co/datasets/HuggingFaceH4/no_robots
-		
-		https://huggingface.co/datasets/openai/openai_humaneval
+    
+        https://huggingface.co/datasets/HuggingFaceH4/no_robots
+        
+        https://huggingface.co/datasets/openai/openai_humaneval
 
-		
+        
    * Logic : 
-	  
-		https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
-		
-		
+      
+        https://huggingface.co/datasets/PrimeIntellect/SYNTHETIC-2-SFT-verified
+        
+        
 * **2. Websites & Research Frameworks**
 
 
-	* https://streamlit.io/
+    * https://streamlit.io/
 
 
 
 * **3. AI Tools Used In This Project**
 
 
-	* Eddie:
-		* GitHub Copilot (for VS Code): Inline code completions and suggestions
-		* Gemini: Research and learning how to build with Streamlit
+    * Eddie:
+        * GitHub Copilot (for VS Code): Inline code completions and suggestions
+        * Gemini: Research and learning how to build with Streamlit
 
-	* Roy:
-		* Gemini: Debugging
-		* Codex: Setting up the coding environment and hardware issues
-		* Claude: Aided with the building of the transformer architecture
-	
+    * Roy:
+        * Gemini: Debugging
+        * Codex: Setting up the coding environment and hardware issues
+        * Claude: Aided with the building of the transformer architecture
+    
         """
         )
 st.sidebar.markdown(f"**Logged in as:**<br>{st.session_state.user_email}", unsafe_allow_html=True)
@@ -356,6 +342,5 @@ with st.sidebar.expander("Update Your Password", expanded=False):
         if st.sidebar.button("Logout", key="logout_sidebar_btn"):
             st.session_state.logged_in = False
             st.session_state.user_email = ""
-            auth.supabase.auth.sign_out()
+            auth.get_client().auth.sign_out()
             st.rerun()
-
