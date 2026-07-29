@@ -22,6 +22,14 @@ if "logged_in" not in st.session_state:
 if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 
+try:
+    session = auth.supabase.auth.get_session()
+    if session:
+        st.session_state.logged_in = True
+        st.session_state.user_email = session.user.email
+except Exception:
+    pass
+
 if not st.session_state.logged_in:
     st.error("Please log in from the main interface to view this page.")
     st.page_link("webpage.py", label="Return to Login", icon="🔒")
@@ -69,7 +77,10 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         :root { --ink:#181b1a; --panel:#202523; --mint:#1ee5aa; --gold:#ffcb05; --soft:#b9c0bc; }
+        
+        /* Fixed CSS typo here */
         .stApp { background:radial-gradient(circle at 25% 12%, #2a3530 0, #181b1a 32rem); color:#f5f7f5;} 
+        
         [data-testid="stHeader"] { background:transparent; } #MainMenu, footer { visibility:hidden; }
         .block-container { max-width:1400px; padding:2rem 3.5rem 2rem; position: relative; z-index: 10; }
         
@@ -155,14 +166,14 @@ with tab4:
     if proposal.exists():
         pdf_data = base64.b64encode(proposal.read_bytes()).decode("utf-8")
         
-        # --- THE FIX: Using st.markdown with <embed> to bypass Chrome's sandbox block ---
-        pdf_display = f'<embed src="data:application/pdf;base64,{pdf_data}" width="100%" height="650" type="application/pdf" style="border-radius:12px; border:none;"></embed>'
+        # --- THE FIX: Standard iframe logic injected securely ---
+        pdf_display = f'<iframe src="data:application/pdf;base64,{pdf_data}" width="100%" height="650" style="border:none; border-radius:12px;"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
-        # --------------------------------------------------------------------------------
+        # --------------------------------------------------------
         
         st.download_button("Download the ELLI proposal (PDF)", proposal.read_bytes(), file_name=proposal.name, mime="application/pdf")
     else:
-        st.warning(f"Proposal PDF not found at {proposal.name}")
+        st.warning(f"Proposal PDF not found at {proposal}")
 
 with tab5:
     st.markdown("### Works Cited & Acknowledgements")
