@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit_pdf_viewer import pdf_viewer
 
 # Ensure we can import auth.py from the main folder
 ROOT = Path(__file__).parent.parent
@@ -162,28 +163,11 @@ with tab4:
     st.markdown("### The Original Idea")
     st.markdown("The proposal of the original concept behind ELLI.")
     proposal = ROOT / "_Proposal of ELLI.pdf"
+    
     if proposal.exists():
-        pdf_data = base64.b64encode(proposal.read_bytes()).decode("utf-8")
-        
-        # --- THE FIX: JS Blob URL injection ---
-        # This converts the base64 string into an in-memory browser file, bypassing Chrome's data: URI restrictions.
-        blob_pdf_html = f"""
-        <script>
-            const b64 = "{pdf_data}";
-            const byteCharacters = atob(b64);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {{
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }}
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], {{type: 'application/pdf'}});
-            const url = URL.createObjectURL(blob);
-            
-            document.write(`<iframe src="${{url}}" width="100%" height="650px" style="border:none; border-radius:12px;"></iframe>`);
-        </script>
-        """
-        components.html(blob_pdf_html, height=665)
-        # ----------------------------------------
+        # --- THE FIX: Using the official streamlit-pdf-viewer ---
+        pdf_viewer(str(proposal))
+        # --------------------------------------------------------
         
         st.download_button("Download the ELLI proposal (PDF)", proposal.read_bytes(), file_name=proposal.name, mime="application/pdf")
     else:
