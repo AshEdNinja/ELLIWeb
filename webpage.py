@@ -267,7 +267,7 @@ with st.sidebar.expander("Personalization", expanded=False):
     if current_profile.get("username") or current_profile.get("description"):
         st.caption("ELLI will use this profile to personalize replies across chats.")
     else:
-        st.caption("Without a profile, your ELLI experience will be more generalized.")
+        st.caption("Without a profile, your ELLI conversations will be more generalized.")
 
 with st.sidebar.expander("Update Your Password", expanded=False):
     with st.form("change_password_form"):
